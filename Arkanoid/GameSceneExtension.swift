@@ -140,18 +140,6 @@ extension GameScene
         self.m_Bar.zPosition = 2
         self.addChild(self.m_Bar)
         
-        //Physics
-        self.m_Bar.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: m_Bar.size.width, height: m_Bar.size.height))
-        self.m_Bar.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        self.m_Bar.physicsBody?.allowsRotation = false
-        self.m_Bar.physicsBody?.affectedByGravity = false
-        self.m_Bar.physicsBody?.restitution = 1.0
-        self.m_Bar.physicsBody?.friction = 0.0
-        self.m_Bar.physicsBody?.linearDamping = 0.0
-        
-        // Collision
-        self.m_Bar.physicsBody?.categoryBitMask = self.m_collisionBitmask
-        
         //Hide it
         self.m_Bar.isHidden = true
     }

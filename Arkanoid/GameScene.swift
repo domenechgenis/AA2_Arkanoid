@@ -43,7 +43,7 @@ class GameScene: SKScene {
           let location = touch.location(in: self)
           let touchedNode = atPoint(location)
     
-            if (touchedNode.name == m_playButtonLabel.name){
+          if (touchedNode.name == m_playButtonLabel.name){
               print("Play Button Pressed")
                 PlayPressed()
           }
@@ -69,19 +69,11 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval)
     {
-        print(m_Bar.position)
-        
         //Control Ball
         if(m_Ball.position.y < -(self.size.height / 2))
         {
             ResetBall()
         }
-        
-        if(m_Bar.position.y != -(self.size.height / 2) + 100)
-        {
-            m_Bar.position.y = -(self.size.height / 2) + 100
-        }
-        
     }
         
     
