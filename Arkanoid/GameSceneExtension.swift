@@ -131,17 +131,49 @@ extension GameScene
         self.m_borderTop.isHidden = true
     }
     
+    func AddBricks()
+    {
+        var startX = -(self.size.width / 2) + 85
+        var startY = (self.size.height / 2) - 200
+        var auxNum: Int = 1
+        
+        for brick in 0 ... 6
+        {
+            AddBricks(xPos: startX, yPos: startY)
+            startX = startX + 100
+        }
+    }
+    
+    func AddBricks(xPos : CGFloat, yPos : CGFloat)
+    {
+        let brick = SKSpriteNode(imageNamed: "block_blue")
+        brick.position = CGPoint(x: xPos, y: yPos)
+        brick.zPosition = 1
+        brick.size = CGSize(width: 75, height: 25)
+        brick.physicsBody = SKPhysicsBody(texture: brick.texture!, size: brick.size)
+        brick.physicsBody?.allowsRotation = false
+        brick.physicsBody?.affectedByGravity = false
+        brick.physicsBody?.isDynamic = false
+        brick.physicsBody?.restitution = 1.0
+        brick.physicsBody?.friction = 0.0
+        brick.physicsBody?.linearDamping = 0.0
+        brick.physicsBody?.categoryBitMask = 0x0000_0010
+        self.addChild(brick)
+    }
+    
+    
     func AddGameBar()
     {
-        self.m_Bar = SKSpriteNode(imageNamed: "racket")
-        self.m_Bar.name = "bar"
-        self.m_Bar.size = CGSize(width: m_Bar.size.width * 3, height: m_Bar.size.height * 3)
-        self.m_Bar.position = CGPoint(x: 0, y: -(self.size.height / 2) + 100)
-        self.m_Bar.zPosition = 2
-        self.addChild(self.m_Bar)
+        self.m_Racket = SKSpriteNode(imageNamed: "racket")
+        self.m_Racket.name = "racket"
         
+        self.m_Racket.size = CGSize(width: m_Racket.size.width * 3, height: m_Racket.size.height * 3)
+        self.m_Racket.position = CGPoint(x: 0, y: -(self.size.height / 2) + 100)
+        self.m_Racket.zPosition = 2
+        self.addChild(self.m_Racket)
+    
         //Hide it
-        self.m_Bar.isHidden = true
+        self.m_Racket.isHidden = true
     }
     
     func AddGameBall()
@@ -184,4 +216,18 @@ extension GameScene
         _sprite.physicsBody?.categoryBitMask = self.m_collisionBitmask
     }
     
+    
+    //
+    struct Brick
+    {
+        var xPos: Int
+        var yPos: Int
+        var requiredHits: Int
+
+        init(_xPos: Int, _yPos: Int, _requiredHits: Int) {
+            self.xPos = _xPos
+            self.yPos = _yPos
+            self.requiredHits = _requiredHits
+        }
+    }
 }

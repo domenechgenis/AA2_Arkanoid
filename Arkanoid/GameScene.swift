@@ -23,8 +23,10 @@ class GameScene: SKScene {
     var m_borderTop : SKSpriteNode!
     var m_borderLeft : SKSpriteNode!
     var m_borderRight : SKSpriteNode!
-    var m_Bar : SKSpriteNode!
+    var m_Racket : SKSpriteNode!
     var m_Ball : SKSpriteNode!
+    
+    //Control Variables
     
     // Swift Functions
     override func didMove(to view: SKView)
@@ -62,7 +64,7 @@ class GameScene: SKScene {
             let action : SKAction
             action = SKAction.moveTo(x: position.x, duration: 0.05)
             action.timingMode = .easeInEaseOut
-            self.m_Bar.run(action)
+            self.m_Racket.run(action)
         }
         
     }
@@ -131,6 +133,7 @@ class GameScene: SKScene {
     {
         self.AddGameBackground()
         self.AddBorders()
+        self.AddBricks()
         self.AddGameBar()
         self.AddGameBall()
     }
@@ -142,7 +145,7 @@ class GameScene: SKScene {
         m_borderLeft.isHidden = false
         m_borderRight.isHidden = false
         m_Ball.isHidden = false
-        m_Bar.isHidden = false
+        m_Racket.isHidden = false
         
         //All Enabled, start game
         StartGame()
