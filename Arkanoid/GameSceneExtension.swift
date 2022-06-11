@@ -10,17 +10,19 @@ import SpriteKit
 
 extension GameScene
 {
-    func addBlackBackground()
+    /// MAIN MENU CONSTRUCTORS
+    
+    func AddMenuBackground()
     {
-        self.m_background = SKSpriteNode(imageNamed: "BlackBackground")
-        self.m_background.name = "blackBackground"
-        self.m_background.size = CGSize(width: self.size.width, height: self.size.height)
-        self.m_background.position = CGPoint(x: 0, y: 0)
-        self.m_background.zPosition = 2
-        self.addChild(self.m_background)
+        self.m_menuBackground = SKSpriteNode(imageNamed: "BlackBackground")
+        self.m_menuBackground.name = "blackBackground"
+        self.m_menuBackground.size = CGSize(width: self.size.width, height: self.size.height)
+        self.m_menuBackground.position = CGPoint(x: 0, y: 0)
+        self.m_menuBackground.zPosition = 2
+        self.addChild(self.m_menuBackground)
     }
 
-    func addLogo()
+    func AddMenuLogo()
     {
         //Reference Variables
         self.m_logo = SKSpriteNode(imageNamed: "ArkanoidLogo")
@@ -33,44 +35,82 @@ extension GameScene
 
     }
 
-    func addPlayButton()
+    func AddMenuPlayButton()
     {
         //Reference Variables
-        self.playButtonLabel = SKLabelNode(text: "Play")
-        self.playButtonLabel.name = "PlayButton"
+        self.m_playButtonLabel = SKLabelNode(text: "Play")
+        self.m_playButtonLabel.name = "PlayButton"
         
-        self.playButtonLabel.fontColor = UIColor.white
-        self.playButtonLabel.fontSize = self.m_MenuLabelSize
+        self.m_playButtonLabel.fontColor = UIColor.white
+        self.m_playButtonLabel.fontSize = self.m_MenuLabelSize
     
-        self.playButtonLabel.position = CGPoint(x: 0, y: 0)
-        self.playButtonLabel.zPosition = 3
-        self.addChild(self.playButtonLabel)
+        self.m_playButtonLabel.position = CGPoint(x: 0, y: 0)
+        self.m_playButtonLabel.zPosition = 3
+        self.addChild(self.m_playButtonLabel)
     }
     
-    func addOptionsButton()
+    func AddMenuCreditsButton()
     {
         //Reference Variables
-        self.optionsButtonLabel = SKLabelNode(text: "Options")
-        self.optionsButtonLabel.name = "OptionsButton"
+        self.m_creditsButtonLabel = SKLabelNode(text: "Credits")
+        self.m_creditsButtonLabel.name = "CreditsButton"
         
-        self.optionsButtonLabel.fontColor = UIColor.white
-        self.optionsButtonLabel.fontSize = self.m_MenuLabelSize
+        self.m_creditsButtonLabel.fontColor = UIColor.white
+        self.m_creditsButtonLabel.fontSize = self.m_MenuLabelSize
     
-        self.optionsButtonLabel.position = CGPoint(x: 0, y: -100)
-        self.optionsButtonLabel.zPosition = 3
-        self.addChild(self.optionsButtonLabel)
+        self.m_creditsButtonLabel.position = CGPoint(x: 0, y: -150)
+        self.m_creditsButtonLabel.zPosition = 3
+        self.addChild(self.m_creditsButtonLabel)
     }
 
-    func addExitButton()
+    func AddMenuExitButton()
     {
         //Reference Variables
-        self.exitButtonLabel = SKLabelNode(text: "Exit")
-        self.exitButtonLabel.name = "ExitButton"
+        self.m_exitButtonLabel = SKLabelNode(text: "Exit")
+        self.m_exitButtonLabel.name = "ExitButton"
         
-        self.exitButtonLabel.fontColor = UIColor.white
-        self.exitButtonLabel.fontSize = self.m_MenuLabelSize
-        self.exitButtonLabel.position = CGPoint(x: 0, y: -200)
-        self.exitButtonLabel.zPosition = 3
-        self.addChild(self.exitButtonLabel)
+        self.m_exitButtonLabel.fontColor = UIColor.white
+        self.m_exitButtonLabel.fontSize = self.m_MenuLabelSize
+        self.m_exitButtonLabel.position = CGPoint(x: 0, y: -300)
+        self.m_exitButtonLabel.zPosition = 3
+        self.addChild(self.m_exitButtonLabel)
     }
+    
+    /// IN GAME CONSTRUCTORS
+    
+    func AddGameBackground()
+    {
+        self.m_gameBackground = SKSpriteNode(imageNamed: "Background")
+        self.m_gameBackground.name = "gameBackground"
+        self.m_gameBackground.size = CGSize(width: self.size.width, height: self.size.height)
+        self.m_gameBackground.position = CGPoint(x: 0, y: 0)
+        self.m_gameBackground.zPosition = 2
+        self.addChild(self.m_gameBackground)
+        
+        //Hide it
+        self.m_gameBackground.isHidden = true
+    }
+    
+    func AddGameBar()
+    {
+        // Reference position
+        self.m_Bar.position = CGPoint(x: 0, y: -300)
+        self.m_Bar.zPosition = 3
+        self.addChild(self.m_Bar)
+        
+        //Hide it
+        self.m_Ball.isHidden = true
+    }
+    
+    func AddGameBall()
+    {
+        // Reference position
+        self.m_Ball.position = CGPoint(x: 0, y: -300)
+        self.m_Ball.zPosition = 3
+        self.addChild(self.m_Bar)
+        
+        //Hide it
+        self.m_Ball.isHidden = true
+    }
+    
 }
