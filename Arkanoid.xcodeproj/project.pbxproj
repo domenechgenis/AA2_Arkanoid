@@ -15,6 +15,7 @@
 		E3614B33284BB91B009F0F91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3614B31284BB91B009F0F91 /* Main.storyboard */; };
 		E3614B35284BB91F009F0F91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3614B34284BB91F009F0F91 /* Assets.xcassets */; };
 		E3614B38284BB91F009F0F91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3614B36284BB91F009F0F91 /* LaunchScreen.storyboard */; };
+		E3620E4528547DD3004DE156 /* GameSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3620E4428547DD3004DE156 /* GameSceneExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		E3614B32284BB91B009F0F91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E3614B34284BB91F009F0F91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E3614B37284BB91F009F0F91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E3620E4428547DD3004DE156 /* GameSceneExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				E3614B29284BB91B009F0F91 /* GameScene.sks */,
 				E3614B2B284BB91B009F0F91 /* Actions.sks */,
 				E3614B2D284BB91B009F0F91 /* GameScene.swift */,
+				E3620E4428547DD3004DE156 /* GameSceneExtension.swift */,
 				E3614B2F284BB91B009F0F91 /* GameViewController.swift */,
 				E3614B31284BB91B009F0F91 /* Main.storyboard */,
 				E3614B34284BB91F009F0F91 /* Assets.xcassets */,
@@ -144,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3620E4528547DD3004DE156 /* GameSceneExtension.swift in Sources */,
 				E3614B2E284BB91B009F0F91 /* GameScene.swift in Sources */,
 				E3614B30284BB91B009F0F91 /* GameViewController.swift in Sources */,
 				E3614B28284BB91B009F0F91 /* AppDelegate.swift in Sources */,
