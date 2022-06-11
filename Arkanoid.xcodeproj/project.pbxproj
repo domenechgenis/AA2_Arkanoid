@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E33775EC28553B25007932D4 /* GameScenePhysics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33775EB28553B25007932D4 /* GameScenePhysics.swift */; };
 		E3614B28284BB91B009F0F91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3614B27284BB91B009F0F91 /* AppDelegate.swift */; };
 		E3614B2A284BB91B009F0F91 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = E3614B29284BB91B009F0F91 /* GameScene.sks */; };
 		E3614B2C284BB91B009F0F91 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = E3614B2B284BB91B009F0F91 /* Actions.sks */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E33775EB28553B25007932D4 /* GameScenePhysics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScenePhysics.swift; sourceTree = "<group>"; };
 		E3614B24284BB91B009F0F91 /* Arkanoid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkanoid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3614B27284BB91B009F0F91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3614B29284BB91B009F0F91 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				E3614B2B284BB91B009F0F91 /* Actions.sks */,
 				E3614B2D284BB91B009F0F91 /* GameScene.swift */,
 				E3620E4428547DD3004DE156 /* GameSceneExtension.swift */,
+				E33775EB28553B25007932D4 /* GameScenePhysics.swift */,
 				E3614B2F284BB91B009F0F91 /* GameViewController.swift */,
 				E3614B31284BB91B009F0F91 /* Main.storyboard */,
 				E3614B34284BB91F009F0F91 /* Assets.xcassets */,
@@ -149,6 +152,7 @@
 			files = (
 				E3620E4528547DD3004DE156 /* GameSceneExtension.swift in Sources */,
 				E3614B2E284BB91B009F0F91 /* GameScene.swift in Sources */,
+				E33775EC28553B25007932D4 /* GameScenePhysics.swift in Sources */,
 				E3614B30284BB91B009F0F91 /* GameViewController.swift in Sources */,
 				E3614B28284BB91B009F0F91 /* AppDelegate.swift in Sources */,
 			);

@@ -2,14 +2,18 @@ import GameplayKit
 import SpriteKit
 import CoreMotion
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate{
     
     //Game Variables
     //Constants
     let m_menuLabelSize : CGFloat = 80
     let m_GameBorderSize : CGFloat = 30
-    let m_initialBallSpeed = CGVector(dx: 200, dy: 200)
-    let m_collisionBitmask : UInt32 = 0b0001
+    let m_initialBallSpeed = CGVector(dx: 20, dy: -20)
+    
+    let m_ballBitmask : UInt32 = 0x1 << 0       // 000000000
+    let m_bottomBitmask : UInt32 = 0x1 << 1     // 000000001
+    let m_brickBitmask : UInt32 = 0x1 << 2      // 000000010
+    let m_racketBitmask : UInt32 = 0x1 << 3     // 000001000
     
     //Menu Varables
     var m_menuBackground : SKSpriteNode!
@@ -29,9 +33,13 @@ class GameScene: SKScene {
     //Control Variables
     
     // Swift Functions
+    
     override func didMove(to view: SKView)
     {
-        //Create the Menu and show it
+        // Create Settings of the world
+        self.CreateWorldSettings()
+        
+        // Create the Menu and show it
         self.CreateMenu()
         
         // Create the Game and keet it hided until press play
@@ -78,6 +86,27 @@ class GameScene: SKScene {
         }
     }
         
+    func didBegin(_ contact: SKPhysicsContact) {
+        var firstBody = SKPhysicsBody()
+        var secondBody = SKPhysicsBody()
+        
+        if(contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask){
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        }
+        else
+        {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        
+        
+        //Delegates
+        if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_bottomBitmask)
+        {
+            print("You lose!!!")
+        }
+    }
     
     // Menu Functions
     private func CreateMenu()
@@ -153,7 +182,7 @@ class GameScene: SKScene {
     
     private func StartGame()
     {
-        m_Ball.physicsBody?.velocity = m_initialBallSpeed
+        m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
     }
     
     private func ResetBall()
@@ -161,5 +190,14 @@ class GameScene: SKScene {
         //TODO -> Change to random point
         m_Ball.position = CGPoint(x: 0, y: 0)
         m_Ball.physicsBody?.velocity = m_initialBallSpeed
+    }
+    
+    private func CreateWorldSettings()
+    {
+        let worldBorder = SKPhysicsBody(edgeLoopFrom: self.frame)
+        self.physicsBody = worldBorder
+        self.physicsBody?.friction = 0
+        self.physicsWorld.gravity = .zero
+        self.physicsWorld.contactDelegate = self
     }
 }

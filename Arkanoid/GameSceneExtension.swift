@@ -10,7 +10,6 @@ import SpriteKit
 
 extension GameScene
 {
-    
     /// MAIN MENU CONSTRUCTORS
     
     func AddMenuBackground()
@@ -104,6 +103,14 @@ extension GameScene
         self.m_borderTop.zPosition = 1
         self.addChild(self.m_borderTop)
         
+        // Bottom
+        let m_bottomRect = CGRect(x: self.frame.origin.x,y: self.frame.origin.y,width: self.frame.size.width,height: 1)
+        let bottom = SKNode()
+        bottom.physicsBody = SKPhysicsBody(edgeLoopFrom: m_bottomRect)
+        self.addChild(bottom)
+        bottom.physicsBody?.categoryBitMask = m_bottomBitmask
+        
+        
         // Left
         self.m_borderLeft = SKSpriteNode(imageNamed: "border_left")
         self.m_borderLeft.name = "borderLeft"
@@ -119,11 +126,6 @@ extension GameScene
         self.m_borderRight.position = CGPoint(x: (self.size.width / 2), y: 0)
         self.m_borderRight.zPosition = 1
         self.addChild(self.m_borderRight)
-        
-        //Set Physics
-        AddStaticPhysics(_sprite: self.m_borderTop)
-        AddStaticPhysics(_sprite: self.m_borderLeft)
-        AddStaticPhysics(_sprite: self.m_borderRight)
         
         //Hide it
         self.m_borderLeft.isHidden = true
@@ -150,15 +152,8 @@ extension GameScene
         brick.position = CGPoint(x: xPos, y: yPos)
         brick.zPosition = 1
         brick.size = CGSize(width: 75, height: 25)
-        brick.physicsBody = SKPhysicsBody(texture: brick.texture!, size: brick.size)
-        brick.physicsBody?.allowsRotation = false
-        brick.physicsBody?.affectedByGravity = false
-        brick.physicsBody?.isDynamic = false
-        brick.physicsBody?.restitution = 1.0
-        brick.physicsBody?.friction = 0.0
-        brick.physicsBody?.linearDamping = 0.0
-        brick.physicsBody?.categoryBitMask = 0x0000_0010
-        self.addChild(brick)
+        
+        //Physics
     }
     
     
@@ -172,8 +167,18 @@ extension GameScene
         self.m_Racket.zPosition = 2
         self.addChild(self.m_Racket)
     
-        //Hide it
+        // Hide it
         self.m_Racket.isHidden = true
+        
+        // Physics
+        self.m_Racket.physicsBody = SKPhysicsBody(rectangleOf: m_Racket.frame.size)
+        self.m_Racket.physicsBody?.friction = 0.4
+        self.m_Racket.physicsBody?.restitution = 0.1
+        self.m_Racket.physicsBody?.isDynamic = false
+        
+        //BitMask
+        self.m_Racket.physicsBody?.categoryBitMask = m_racketBitmask
+
     }
     
     func AddGameBall()
@@ -184,40 +189,23 @@ extension GameScene
         self.m_Ball.position = CGPoint(x: 0, y: 0)
         self.m_Ball.zPosition = 2
         self.addChild(self.m_Ball)
+                
+        // Hide it
+        self.m_Ball.isHidden = true
         
         // Physics
-        self.m_Ball.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: self.size.width, height: self.size.height))
-        self.m_Ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        self.m_Ball.physicsBody?.affectedByGravity = false
+        self.m_Ball.physicsBody = SKPhysicsBody(circleOfRadius: self.m_Ball.frame.size.width / 2)
+        self.m_Ball.physicsBody?.friction = 0
+        self.m_Ball.physicsBody?.restitution = 1
+        self.m_Ball.physicsBody?.linearDamping = 0
         self.m_Ball.physicsBody?.allowsRotation = false
-        self.m_Ball.physicsBody?.restitution = 1.0
-        self.m_Ball.physicsBody?.friction = 0.0
-        self.m_Ball.physicsBody?.linearDamping = 0.0
         
-        // Collision
-        self.m_Ball.physicsBody?.collisionBitMask = self.m_collisionBitmask
+        //BitMask
+        self.m_Ball.physicsBody?.categoryBitMask = m_ballBitmask
+        self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask
         
-        //Hide it
-        self.m_Ball.isHidden = true
     }
     
-    private func AddStaticPhysics(_sprite : SKSpriteNode)
-    {
-        _sprite.physicsBody = SKPhysicsBody(texture: _sprite.texture!, size: _sprite.size)
-        
-        _sprite.physicsBody?.allowsRotation = false
-        _sprite.physicsBody?.affectedByGravity = false
-        _sprite.physicsBody?.isDynamic = false
-        _sprite.physicsBody?.restitution = 1.0
-        _sprite.physicsBody?.friction = 0.0
-        _sprite.physicsBody?.linearDamping = 0.0
-        
-        // Collision
-        _sprite.physicsBody?.categoryBitMask = self.m_collisionBitmask
-    }
-    
-    
-    //
     struct Brick
     {
         var xPos: Int
