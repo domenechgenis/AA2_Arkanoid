@@ -10,9 +10,11 @@ import SpriteKit
 import CoreMotion
 
 //TODO
-// -> Make it the 3 scenes instead of hide -  unhide
 // -> Physics
 // -> Test
+
+// Not working
+// -> Transition Between Scenes
 
 class GameScene: SKScene{
     
@@ -20,9 +22,9 @@ class GameScene: SKScene{
     //Constants
     let m_menuLabelSize : CGFloat = 80
     let m_GameBorderSize : CGFloat = 30
-    let m_initialBallSpeed = CGVector(dx: 5, dy: -5)
-    let m_Rows : Int = 6
-    let m_Columns : Int = 6
+    let m_initialBallSpeed = CGVector(dx: 10, dy: -10)
+    let m_Rows : Int = 5
+    let m_Columns : Int = 5
     let m_BrickPadding : Int = 40
     
     let m_ballBitmask : UInt32 = 0x1 << 0       // 000000000
@@ -45,17 +47,7 @@ class GameScene: SKScene{
     var m_Racket : SKSpriteNode!
     var m_Ball : SKSpriteNode!
     
-    //Control Variables
-    var m_bricks : [Brick] = []
-    
-    // Swift Functions
-    override init(size: CGSize) {
-        super.init(size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+    var m_bricks : Int = 0
     
     override func didMove(to view: SKView)
     {
@@ -184,6 +176,7 @@ class GameScene: SKScene{
         action = SKAction.moveTo(y: 0, duration: 0)
         action.timingMode = .easeInEaseOut
         self.m_Ball.run(action)
+        m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
     }
     
     private func CreateWorldSettings()

@@ -136,24 +136,46 @@ extension GameScene
     {
         var startX = -(self.size.width / 2) + 85
         var startY = (self.size.height / 2) - 200
+        var wantedColor = "blue"
         
-        for index in 1 ... m_Rows
+        for i in 1 ... m_Rows
         {
-            for index in 1 ... m_Columns
+            for j in 1 ... m_Columns
             {
-                AddSingleBrick(xPos: startX, yPos: startY)
+                AddSingleBrick(xPos: startX, yPos: startY,wantedColor: wantedColor)
                 startX += 150
             }
+            
+            wantedColor = GetNextColorBrick(index: i)
             startX = -(self.size.width / 2) + 85
             startY -= 50.0
         }
         
-        print("Level created with: " + String(m_bricks.count) + " blocks.")
+        print("Level created with: " + String(m_bricks) + " blocks.")
     }
     
-    func AddSingleBrick(xPos: CGFloat, yPos : CGFloat)
+    func GetNextColorBrick(index : Int) -> String {
+        if(index == 1)
+        {
+            return "green";
+        }
+        else if ( index == 2)
+        {
+            return "pink"
+        }
+        else if ( index == 3)
+        {
+            return "red"
+        }
+        else
+        {
+            return "yellow"
+        }
+    }
+    
+    func AddSingleBrick(xPos: CGFloat, yPos : CGFloat, wantedColor : String)
     {
-        var brick = SKSpriteNode(imageNamed: "block_blue")
+        let brick = SKSpriteNode(imageNamed: "block_" + wantedColor)
         brick.name = "brick0"
         brick.size = CGSize(width: brick.size.width * 5, height: brick.size.height * 3)
         brick.position = CGPoint(x: xPos, y: yPos)
@@ -168,9 +190,8 @@ extension GameScene
         //BitMask
         brick.physicsBody?.categoryBitMask = m_brickBitmask
                 
-        var newBrick: Brick
-        newBrick = Brick(_xPos: 0, _yPos: Int(-(self.size.height / 2) + 500), _requiredHits: 1)
-        m_bricks.append(newBrick)
+        //Brick Counter
+        m_bricks = m_bricks + 1
         
         self.addChild(brick)
     }
@@ -222,19 +243,5 @@ extension GameScene
         self.m_Ball.physicsBody?.categoryBitMask = m_ballBitmask
         self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask | m_brickBitmask  
         
-    }
-    
-    struct Brick
-    {
-        var xPos: Int
-        var yPos: Int
-        var requiredHits: Int
-
-        init(_xPos: Int, _yPos: Int, _requiredHits: Int)
-        {
-            self.xPos = _xPos
-            self.yPos = _yPos
-            self.requiredHits = _requiredHits
-        }
     }
 }

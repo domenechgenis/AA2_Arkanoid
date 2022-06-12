@@ -34,8 +34,11 @@ extension GameScene : SKPhysicsContactDelegate
         else if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_brickBitmask)
         {
             secondBody.node?.removeFromParent()
+            m_bricks -= 1;
             
-            if(true)
+            print(String(m_bricks) + " left.")
+ 
+            if(HasGameFinished())
             {
                 let transition:SKTransition = SKTransition.fade(withDuration: 1)
                 let scene : SKScene = GameOverScene(size: self.frame.size)
@@ -47,6 +50,6 @@ extension GameScene : SKPhysicsContactDelegate
     }
     
     func HasGameFinished() -> Bool {
-        return m_bricks.isEmpty
+        return m_bricks <= 0
     }
 }

@@ -22,15 +22,6 @@ class GameOverScene : SKScene
     var m_creditsButtonLabel: SKLabelNode!
     var m_exitButtonLabel: SKLabelNode!
     
-    // Swift functions
-    override init(size: CGSize) {
-        super.init(size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let transition:SKTransition = SKTransition.fade(withDuration: 1)
