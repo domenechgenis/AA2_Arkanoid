@@ -11,18 +11,6 @@ import SpriteKit
 extension GameScene
 {
     /// MAIN MENU CONSTRUCTORS
-    
-    func AddMenuBackground()
-    {
-        // Reference Variables
-        self.m_menuBackground = SKSpriteNode(imageNamed: "blackbackground")
-        self.m_menuBackground.name = "blackbackground"
-        
-        self.m_menuBackground.size = CGSize(width: self.size.width, height: self.size.height)
-        self.m_menuBackground.position = CGPoint(x: 0, y: 0)
-        self.m_menuBackground.zPosition = 0
-        self.addChild(self.m_menuBackground)
-    }
 
     func AddMenuLogo()
     {
@@ -84,8 +72,8 @@ extension GameScene
     {
         self.m_gameBackground = SKSpriteNode(imageNamed: "hexagon_pattern")
         self.m_gameBackground.name = "gameBackground"
-        self.m_gameBackground.size = CGSize(width: self.size.width, height: self.size.height)
-        self.m_gameBackground.position = CGPoint(x: 0, y: 0)
+        self.m_gameBackground.size = CGSize(width: self.size.width - 20, height: self.size.height - 125)
+        self.m_gameBackground.position = CGPoint(x: 0, y: -65)
         self.m_gameBackground.zPosition = 0
         self.addChild(self.m_gameBackground)
         
@@ -140,7 +128,7 @@ extension GameScene
         
         for i in 1 ... m_Rows
         {
-            for j in 1 ... m_Columns
+            for _ in 1 ... m_Columns
             {
                 AddSingleBrick(xPos: startX, yPos: startY,wantedColor: wantedColor)
                 startX += 150
@@ -261,6 +249,10 @@ extension GameScene
     
         self.m_gameOverTopTextLabel.position = CGPoint(x: 0, y: 150)
         self.m_gameOverTopTextLabel.zPosition = 1
+        
+        
+        self.m_gameOverTopTextLabel.isHidden = true
+        
         self.addChild(self.m_gameOverTopTextLabel)
     }
     
@@ -275,20 +267,26 @@ extension GameScene
     
         self.m_gameOverRetryButtonLabel.position = CGPoint(x: 0, y: 0)
         self.m_gameOverRetryButtonLabel.zPosition = 1
+        
+        self.m_gameOverRetryButtonLabel.isHidden = true
+        
         self.addChild(self.m_gameOverRetryButtonLabel)
     }
 
     func AddGameOverExitButton()
     {
         //Reference Variables
-        self.m_gameOverRetryButtonLabel = SKLabelNode(text: "Exit")
-        self.m_gameOverRetryButtonLabel.name = "ExitButton"
+        self.m_gameOverExitButtonLabel = SKLabelNode(text: "Exit")
+        self.m_gameOverExitButtonLabel.name = "ExitButton"
         
-        self.m_gameOverRetryButtonLabel.fontColor = UIColor.white
-        self.m_gameOverRetryButtonLabel.fontSize = self.m_menuLabelSize
-        self.m_gameOverRetryButtonLabel.position = CGPoint(x: 0, y: -150)
-        self.m_gameOverRetryButtonLabel.zPosition = 1
-        self.addChild(self.m_gameOverRetryButtonLabel)
+        self.m_gameOverExitButtonLabel.fontColor = UIColor.white
+        self.m_gameOverExitButtonLabel.fontSize = self.m_menuLabelSize
+        self.m_gameOverExitButtonLabel.position = CGPoint(x: 0, y: -150)
+        self.m_gameOverExitButtonLabel.zPosition = 1
+        
+        self.m_gameOverExitButtonLabel.isHidden = true
+        
+        self.addChild(self.m_gameOverExitButtonLabel)
     }
 
 }

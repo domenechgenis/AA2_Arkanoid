@@ -33,7 +33,6 @@ class GameScene: SKScene{
     let m_racketBitmask : UInt32 = 0x1 << 3     // 000001000
     
     //Menu Varables
-    var m_menuBackground : SKSpriteNode!
     var m_logo : SKSpriteNode!
     var m_playButtonLabel: SKLabelNode!
     var m_creditsButtonLabel: SKLabelNode!
@@ -48,7 +47,6 @@ class GameScene: SKScene{
     var m_Ball : SKSpriteNode!
     
     //Game over variables
-    var m_gameOverMenuBackground : SKSpriteNode!
     var m_gameOverTopTextLabel : SKLabelNode!
     var m_gameOverScoreLabel : SKLabelNode!
     var m_gameOverMaxScoreLabel : SKLabelNode!
@@ -72,6 +70,9 @@ class GameScene: SKScene{
         
         // Create the Game and keet it hided until press play
         self.CreateGame()
+        
+        // Create the Game over and keeit it hided until player lose
+        self.CreateGameOverMenu()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -85,8 +86,8 @@ class GameScene: SKScene{
               print("Play Button Pressed")
                 PlayPressed()
           }
-            else if(touchedNode.name == m_creditsButtonLabel.name){
-                print("Credits Button Pressed")
+            else if(touchedNode.name == m_gameOverRetryButtonLabel.name){
+                RetryPressed()
           }
             else if(touchedNode.name == m_exitButtonLabel.name){
               print("Exit Button Pressed")
@@ -108,16 +109,24 @@ class GameScene: SKScene{
     // Menu Functions
     private func CreateMenu()
     {
-        self.AddMenuBackground()
+        //Change background
+        self.backgroundColor = .black
+        
         self.AddMenuLogo()
         self.AddMenuPlayButton()
         self.AddMenuCreditsButton()
         self.AddMenuExitButton()
     }
     
+    private func RetryPressed()
+    {
+        HideGameOverMenu()
+        ShowPlayGround()
+        StartGame()
+    }
+    
     private func HideMenu()
     {
-        m_menuBackground.isHidden = true
         m_logo.isHidden = true
         m_playButtonLabel.isHidden = true
         m_creditsButtonLabel.isHidden = true
@@ -126,12 +135,26 @@ class GameScene: SKScene{
     
     func ShowMenu()
     {
-        m_menuBackground.isHidden = false
         m_logo.isHidden = false
         m_playButtonLabel.isHidden = false
         m_creditsButtonLabel.isHidden = false
         m_exitButtonLabel.isHidden = false
     }
+    
+    func ShowGameOverMenu()
+    {
+        m_gameOverTopTextLabel.isHidden = false
+        m_gameOverRetryButtonLabel.isHidden = false
+        m_gameOverExitButtonLabel.isHidden = false
+    }
+    
+    private func HideGameOverMenu()
+    {
+        m_gameOverTopTextLabel.isHidden = true
+        m_gameOverRetryButtonLabel.isHidden = true
+        m_gameOverExitButtonLabel.isHidden = true
+    }
+    
     
     //Buttons Functions
     private func ExitPressed()
@@ -197,7 +220,10 @@ class GameScene: SKScene{
     
     private func StartGame()
     {
+        //Reset lives
         m_lives = 3
+        
+        //Reset ball velocity
         m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
     }
     
@@ -221,7 +247,7 @@ class GameScene: SKScene{
     }
     
     
-    func ShowGameOverMenu()
+    func CreateGameOverMenu()
     {
         self.AddTextLabel()
         self.AddGamOverRetryButton()
