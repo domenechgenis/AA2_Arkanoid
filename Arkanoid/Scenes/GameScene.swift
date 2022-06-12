@@ -47,7 +47,20 @@ class GameScene: SKScene{
     var m_Racket : SKSpriteNode!
     var m_Ball : SKSpriteNode!
     
+    //Game over variables
+    var m_gameOverMenuBackground : SKSpriteNode!
+    var m_gameOverTopTextLabel : SKLabelNode!
+    var m_gameOverScoreLabel : SKLabelNode!
+    var m_gameOverMaxScoreLabel : SKLabelNode!
+    var m_gameOverRetryButtonLabel: SKLabelNode!
+    var m_gameOverMainMenuButtonLabel: SKLabelNode!
+    var m_gameOverExitButtonLabel: SKLabelNode!
+    var m_gameOverDoneByLabel: SKLabelNode!
+    
+    // Game info
+    var bricksArray : [SKSpriteNode] = []
     var m_bricks : Int = 0
+    var m_lives : Int = 3
     
     override func didMove(to view: SKView)
     {
@@ -111,7 +124,7 @@ class GameScene: SKScene{
         m_exitButtonLabel.isHidden = true
     }
     
-    private func ShowMenu()
+    func ShowMenu()
     {
         m_menuBackground.isHidden = false
         m_logo.isHidden = false
@@ -160,12 +173,31 @@ class GameScene: SKScene{
         m_Ball.isHidden = false
         m_Racket.isHidden = false
         
+        for bricksArray in bricksArray {
+            bricksArray.isHidden = false
+        }
+        
         //All Enabled, start game
         StartGame()
     }
     
+    func HidePlayGround()
+    {
+        m_gameBackground.isHidden = true
+        m_borderTop.isHidden = true
+        m_borderLeft.isHidden = true
+        m_borderRight.isHidden = true
+        m_Ball.isHidden = true
+        m_Racket.isHidden = true
+        
+        for bricksArray in bricksArray {
+            bricksArray.isHidden = true
+        }
+    }
+    
     private func StartGame()
     {
+        m_lives = 3
         m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
     }
     
@@ -186,5 +218,13 @@ class GameScene: SKScene{
         self.physicsBody?.friction = 0
         self.physicsWorld.gravity = .zero
         self.physicsWorld.contactDelegate = self
+    }
+    
+    
+    func ShowGameOverMenu()
+    {
+        self.AddTextLabel()
+        self.AddGamOverRetryButton()
+        self.AddGameOverExitButton()
     }
 }

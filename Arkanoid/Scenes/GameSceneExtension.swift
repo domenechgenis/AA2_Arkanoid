@@ -189,8 +189,12 @@ extension GameScene
 
         //BitMask
         brick.physicsBody?.categoryBitMask = m_brickBitmask
+        
+        //Hide it
+        brick.isHidden = true
                 
         //Brick Counter
+        bricksArray.append(brick)
         m_bricks = m_bricks + 1
         
         self.addChild(brick)
@@ -241,7 +245,50 @@ extension GameScene
         
         //BitMask
         self.m_Ball.physicsBody?.categoryBitMask = m_ballBitmask
-        self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask | m_brickBitmask  
-        
+        self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask | m_brickBitmask
     }
+    
+    // GAME OVER FUNCTIONS
+    
+    func AddTextLabel()
+    {
+        //Reference Variables
+        self.m_gameOverTopTextLabel = SKLabelNode(text: "Game Over")
+        self.m_gameOverTopTextLabel.name = "RetryButton"
+        
+        self.m_gameOverTopTextLabel.fontColor = UIColor.white
+        self.m_gameOverTopTextLabel.fontSize = self.m_menuLabelSize
+    
+        self.m_gameOverTopTextLabel.position = CGPoint(x: 0, y: 150)
+        self.m_gameOverTopTextLabel.zPosition = 1
+        self.addChild(self.m_gameOverTopTextLabel)
+    }
+    
+    func AddGamOverRetryButton()
+    {
+        //Reference Variables
+        self.m_gameOverRetryButtonLabel = SKLabelNode(text: "Retry")
+        self.m_gameOverRetryButtonLabel.name = "RetryButton"
+        
+        self.m_gameOverRetryButtonLabel.fontColor = UIColor.white
+        self.m_gameOverRetryButtonLabel.fontSize = self.m_menuLabelSize
+    
+        self.m_gameOverRetryButtonLabel.position = CGPoint(x: 0, y: 0)
+        self.m_gameOverRetryButtonLabel.zPosition = 1
+        self.addChild(self.m_gameOverRetryButtonLabel)
+    }
+
+    func AddGameOverExitButton()
+    {
+        //Reference Variables
+        self.m_gameOverRetryButtonLabel = SKLabelNode(text: "Exit")
+        self.m_gameOverRetryButtonLabel.name = "ExitButton"
+        
+        self.m_gameOverRetryButtonLabel.fontColor = UIColor.white
+        self.m_gameOverRetryButtonLabel.fontSize = self.m_menuLabelSize
+        self.m_gameOverRetryButtonLabel.position = CGPoint(x: 0, y: -150)
+        self.m_gameOverRetryButtonLabel.zPosition = 1
+        self.addChild(self.m_gameOverRetryButtonLabel)
+    }
+
 }

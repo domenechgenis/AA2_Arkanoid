@@ -29,6 +29,14 @@ extension GameScene : SKPhysicsContactDelegate
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_bottomBitmask)
         {
             self.ResetBall()
+            
+            self.m_lives -= 1
+            
+            if(self.m_lives <= 0)
+            {
+                self.HidePlayGround()
+                self.ShowGameOverMenu()
+            }
         }
         
         else if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_brickBitmask)
@@ -40,10 +48,7 @@ extension GameScene : SKPhysicsContactDelegate
  
             if(HasGameFinished())
             {
-                let transition:SKTransition = SKTransition.fade(withDuration: 1)
-                let scene : SKScene = GameOverScene(size: self.frame.size)
-                scene.scaleMode = .aspectFit
-                self.view?.presentScene(scene,transition: transition)
+                self.HidePlayGround()
             }
         
         }
