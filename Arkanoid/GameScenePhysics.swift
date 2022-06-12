@@ -28,8 +28,6 @@ extension GameScene : SKPhysicsContactDelegate
         //Delegates
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_bottomBitmask)
         {
-            secondBody.node?.removeFromParent()
-            print("The ball hited the bottom side")
             self.ResetBall()
         }
         
@@ -37,9 +35,12 @@ extension GameScene : SKPhysicsContactDelegate
         {
             secondBody.node?.removeFromParent()
             
-            if(HasGameFinished())
+            if(true)
             {
-                print("Fin del juego")
+                let transition:SKTransition = SKTransition.fade(withDuration: 1)
+                let scene : SKScene = GameOverScene(size: self.frame.size)
+                scene.scaleMode = .aspectFit
+                self.view?.presentScene(scene,transition: transition)
             }
         
         }

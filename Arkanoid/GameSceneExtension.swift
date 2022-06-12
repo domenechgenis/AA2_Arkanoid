@@ -134,10 +134,29 @@ extension GameScene
     
     func AddBricks()
     {
-        let brick = SKSpriteNode(imageNamed: "block_blue")
+        var startX = -(self.size.width / 2) + 85
+        var startY = (self.size.height / 2) - 200
+        
+        for index in 1 ... m_Rows
+        {
+            for index in 1 ... m_Columns
+            {
+                AddSingleBrick(xPos: startX, yPos: startY)
+                startX += 150
+            }
+            startX = -(self.size.width / 2) + 85
+            startY -= 50.0
+        }
+        
+        print("Level created with: " + String(m_bricks.count) + " blocks.")
+    }
+    
+    func AddSingleBrick(xPos: CGFloat, yPos : CGFloat)
+    {
+        var brick = SKSpriteNode(imageNamed: "block_blue")
         brick.name = "brick0"
         brick.size = CGSize(width: brick.size.width * 5, height: brick.size.height * 3)
-        brick.position = CGPoint(x: 0, y: -(self.size.height / 2) + 500)
+        brick.position = CGPoint(x: xPos, y: yPos)
         brick.zPosition = 2
         
         // Physics
@@ -146,7 +165,6 @@ extension GameScene
         brick.physicsBody?.allowsRotation = false
         brick.physicsBody?.isDynamic = false
 
-              
         //BitMask
         brick.physicsBody?.categoryBitMask = m_brickBitmask
                 
@@ -155,9 +173,6 @@ extension GameScene
         m_bricks.append(newBrick)
         
         self.addChild(brick)
-        
-        print("Level created with: " + String(m_bricks.count) + " blocks.")
-            
     }
     
     func AddGameBar()

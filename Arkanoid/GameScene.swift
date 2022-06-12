@@ -20,7 +20,7 @@ class GameScene: SKScene{
     //Constants
     let m_menuLabelSize : CGFloat = 80
     let m_GameBorderSize : CGFloat = 30
-    let m_initialBallSpeed = CGVector(dx: 200, dy: -200)
+    let m_initialBallSpeed = CGVector(dx: 5, dy: -5)
     let m_Rows : Int = 6
     let m_Columns : Int = 6
     let m_BrickPadding : Int = 40
@@ -49,6 +49,13 @@ class GameScene: SKScene{
     var m_bricks : [Brick] = []
     
     // Swift Functions
+    override init(size: CGSize) {
+        super.init(size: size)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func didMove(to view: SKView)
     {
@@ -167,14 +174,16 @@ class GameScene: SKScene{
     
     private func StartGame()
     {
-        m_Ball.physicsBody?.velocity = m_initialBallSpeed
+        m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
     }
     
     public func ResetBall()
     {
         //TODO -> Change to random point
-        print("Alo??")
-        m_Ball.position = CGPoint(x: 0, y: 0)
+        let action : SKAction
+        action = SKAction.moveTo(y: 0, duration: 0)
+        action.timingMode = .easeInEaseOut
+        self.m_Ball.run(action)
     }
     
     private func CreateWorldSettings()
