@@ -1,8 +1,8 @@
 //
-//  GameViewController.swift
+//  AppDelegate.swift
 //  Arkanoid
 //
-//  Created by Carla Carreras Maly on 4/6/22.
+//  Created by Genis Domenech Traver on 4/6/22.
 //
 
 import UIKit

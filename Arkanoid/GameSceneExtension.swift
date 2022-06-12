@@ -1,8 +1,8 @@
 //
-//  GameSceneExtension.swift
+//  AppDelegate.swift
 //  Arkanoid
 //
-//  Created by Carla Carreras Maly on 11/6/22.
+//  Created by Genis Domenech Traver on 4/6/22.
 //
 
 import Foundation
@@ -110,7 +110,6 @@ extension GameScene
         self.addChild(bottom)
         bottom.physicsBody?.categoryBitMask = m_bottomBitmask
         
-        
         // Left
         self.m_borderLeft = SKSpriteNode(imageNamed: "border_left")
         self.m_borderLeft.name = "borderLeft"
@@ -135,27 +134,31 @@ extension GameScene
     
     func AddBricks()
     {
-        var startX = -(self.size.width / 2) + 85
-        var startY = (self.size.height / 2) - 200
-        var auxNum: Int = 1
-        
-        for brick in 0 ... 6
-        {
-            AddBricks(xPos: startX, yPos: startY)
-            startX = startX + 100
-        }
-    }
-    
-    func AddBricks(xPos : CGFloat, yPos : CGFloat)
-    {
         let brick = SKSpriteNode(imageNamed: "block_blue")
-        brick.position = CGPoint(x: xPos, y: yPos)
-        brick.zPosition = 1
-        brick.size = CGSize(width: 75, height: 25)
+        brick.name = "brick0"
+        brick.size = CGSize(width: brick.size.width * 5, height: brick.size.height * 3)
+        brick.position = CGPoint(x: 0, y: -(self.size.height / 2) + 500)
+        brick.zPosition = 2
         
-        //Physics
+        // Physics
+        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.frame.size)
+        brick.physicsBody?.friction = 0
+        brick.physicsBody?.allowsRotation = false
+        brick.physicsBody?.isDynamic = false
+
+              
+        //BitMask
+        brick.physicsBody?.categoryBitMask = m_brickBitmask
+                
+        var newBrick: Brick
+        newBrick = Brick(_xPos: 0, _yPos: Int(-(self.size.height / 2) + 500), _requiredHits: 1)
+        m_bricks.append(newBrick)
+        
+        self.addChild(brick)
+        
+        print("Level created with: " + String(m_bricks.count) + " blocks.")
+            
     }
-    
     
     func AddGameBar()
     {
@@ -202,7 +205,7 @@ extension GameScene
         
         //BitMask
         self.m_Ball.physicsBody?.categoryBitMask = m_ballBitmask
-        self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask
+        self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask | m_brickBitmask  
         
     }
     
@@ -212,7 +215,8 @@ extension GameScene
         var yPos: Int
         var requiredHits: Int
 
-        init(_xPos: Int, _yPos: Int, _requiredHits: Int) {
+        init(_xPos: Int, _yPos: Int, _requiredHits: Int)
+        {
             self.xPos = _xPos
             self.yPos = _yPos
             self.requiredHits = _requiredHits

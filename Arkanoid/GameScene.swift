@@ -1,14 +1,29 @@
+//
+//  AppDelegate.swift
+//  Arkanoid
+//
+//  Created by Genis Domenech Traver on 4/6/22.
+//
+
 import GameplayKit
 import SpriteKit
 import CoreMotion
 
-class GameScene: SKScene, SKPhysicsContactDelegate{
+//TODO
+// -> Make it the 3 scenes instead of hide -  unhide
+// -> Physics
+// -> Test
+
+class GameScene: SKScene{
     
     //Game Variables
     //Constants
     let m_menuLabelSize : CGFloat = 80
     let m_GameBorderSize : CGFloat = 30
-    let m_initialBallSpeed = CGVector(dx: 20, dy: -20)
+    let m_initialBallSpeed = CGVector(dx: 200, dy: -200)
+    let m_Rows : Int = 6
+    let m_Columns : Int = 6
+    let m_BrickPadding : Int = 40
     
     let m_ballBitmask : UInt32 = 0x1 << 0       // 000000000
     let m_bottomBitmask : UInt32 = 0x1 << 1     // 000000001
@@ -31,6 +46,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var m_Ball : SKSpriteNode!
     
     //Control Variables
+    var m_bricks : [Brick] = []
     
     // Swift Functions
     
@@ -76,38 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
     }
-    
-    override func update(_ currentTime: TimeInterval)
-    {
-        //Control Ball
-        if(m_Ball.position.y < -(self.size.height / 2))
-        {
-            ResetBall()
-        }
-    }
-        
-    func didBegin(_ contact: SKPhysicsContact) {
-        var firstBody = SKPhysicsBody()
-        var secondBody = SKPhysicsBody()
-        
-        if(contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask){
-            firstBody = contact.bodyA
-            secondBody = contact.bodyB
-        }
-        else
-        {
-            firstBody = contact.bodyB
-            secondBody = contact.bodyA
-        }
-        
-        
-        //Delegates
-        if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_bottomBitmask)
-        {
-            print("You lose!!!")
-        }
-    }
-    
+            
     // Menu Functions
     private func CreateMenu()
     {
@@ -182,14 +167,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     private func StartGame()
     {
-        m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
+        m_Ball.physicsBody?.velocity = m_initialBallSpeed
     }
     
-    private func ResetBall()
+    public func ResetBall()
     {
         //TODO -> Change to random point
+        print("Alo??")
         m_Ball.position = CGPoint(x: 0, y: 0)
-        m_Ball.physicsBody?.velocity = m_initialBallSpeed
     }
     
     private func CreateWorldSettings()
