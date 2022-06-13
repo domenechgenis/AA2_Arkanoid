@@ -57,10 +57,14 @@ extension GameScene : SKPhysicsContactDelegate
             print(String(m_bricks) + " left in the level")
             
             //Update Score
-            var brickName : String = secondBody.node!.name!
-    
+            let brickName : String = secondBody.node!.name!
             m_currentScore += self.UpdatePlayerScore(_brick: brickName)
             m_gameScore.text = "1UP: " + String(self.m_currentScore)
+            
+            //Create power up
+            let brickX : CGFloat = secondBody.node!.position.x
+            let brickY : CGFloat = secondBody.node!.position.y
+            self.CreatePowerUp(_brick: brickName, xPos: brickX, yPos: brickY)
             
             if(HasGameFinished())
             {

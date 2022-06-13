@@ -256,13 +256,32 @@ class GameScene: SKScene{
         //Reset ball velocity
         //m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
         m_Ball.physicsBody?.velocity = m_initialBallVelocity
+        
+        print("Game Started!")
+        
+        let brick = SKSpriteNode(imageNamed: "block_blue")
+        brick.size = CGSize(width: brick.size.width * 3, height: brick.size.height * 3)
+        brick.position = CGPoint(x: 0, y: -(self.size.height / 2) + 400)
+        brick.zPosition = 2
+        
+        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.frame.size)
+        brick.physicsBody?.friction = 0
+        brick.physicsBody?.restitution = 1
+        brick.physicsBody?.linearDamping = 0
+        brick.physicsBody?.allowsRotation = false
+        brick.physicsBody?.velocity = CGVector(dx: 0, dy: -100)
+        
+        self.addChild(brick)
+
+        
+        print("Power up created!")
     }
     
     public func ResetBall()
     {
         //TODO -> Change to random point
         let action : SKAction
-        action = SKAction.moveTo(y: 0, duration: 0)
+        action = SKAction.moveTo(y: 100, duration: 0)
         action.timingMode = .easeInEaseOut
         self.m_Ball.run(action)
         
@@ -325,5 +344,21 @@ class GameScene: SKScene{
             print("Block color not identified!!!")
         }
         return score
+    }
+    
+    func CreatePowerUp(_brick : String, xPos : CGFloat, yPos : CGFloat)
+    {
+        let brick = SKSpriteNode(imageNamed: _brick)
+        brick.name = "block_" + _brick
+        brick.size = CGSize(width: brick.size.width * 3, height: brick.size.height * 3)
+        brick.position = CGPoint(x: xPos, y: yPos)
+        brick.zPosition = 2
+        
+        // Physics
+        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.frame.size)
+        brick.physicsBody?.friction = 0
+        brick.physicsBody?.allowsRotation = false
+        
+        print("Power up created!")
     }
 }
