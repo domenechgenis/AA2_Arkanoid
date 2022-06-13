@@ -62,9 +62,13 @@ extension GameScene : SKPhysicsContactDelegate
             m_gameScore.text = "1UP: " + String(self.m_currentScore)
             
             //Create power up
-            let brickX : CGFloat = secondBody.node!.position.x
-            let brickY : CGFloat = secondBody.node!.position.y
-            self.CreatePowerUp(_brick: brickName, xPos: brickX, yPos: brickY)
+            if(!m_PowerUpSpawned)
+            {
+                let brickX : CGFloat = secondBody.node!.position.x
+                let brickY : CGFloat = secondBody.node!.position.y
+                self.CreatePowerUp(_brick: brickName, xPos: brickX, yPos: brickY)
+                m_PowerUpSpawned = true
+            }
             
             if(HasGameFinished())
             {
@@ -74,6 +78,16 @@ extension GameScene : SKPhysicsContactDelegate
             
             //Remove the brick
             secondBody.node?.removeFromParent()
+        }
+        
+        else if(firstBody.categoryBitMask == m_powerUpBitmask && secondBody.categoryBitMask == m_racketBitmask)
+        {
+            print("The power up reached the racket!!")
+        }
+        
+        else if(firstBody.categoryBitMask == m_powerUpBitmask && secondBody.categoryBitMask == m_ballBitmask)
+        {
+            print("The power up reached the ball!!")
         }
     }
 

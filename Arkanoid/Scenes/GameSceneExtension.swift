@@ -199,7 +199,7 @@ extension GameScene
         self.addChild(brick)
     }
     
-    func AddGameBar()
+    func AddGameRacket()
     {
         self.m_Racket = SKSpriteNode(imageNamed: "racket")
         self.m_Racket.name = "racket"

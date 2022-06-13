@@ -24,14 +24,6 @@ class GameViewController: UIViewController {
                 // Present the scene
                 view.presentScene(scene)
             }
-            
-            if let scene = SKScene(fileNamed: "GameOverScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-                
-                // Present the scene
-                view.presentScene(scene)
-            }
 
             view.ignoresSiblingOrder = true
             view.showsFPS = true

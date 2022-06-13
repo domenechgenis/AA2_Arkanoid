@@ -35,6 +35,7 @@ class GameScene: SKScene{
     let m_bottomBitmask : UInt32 = 0x1 << 1     // 000000001
     let m_brickBitmask : UInt32 = 0x1 << 2      // 000000010
     let m_racketBitmask : UInt32 = 0x1 << 3     // 000001000
+    let m_powerUpBitmask : UInt32 = 0x1 << 4    // 000010000
     
     // Keys
     let m_HighScoreKey : String = "HighScore"
@@ -71,6 +72,7 @@ class GameScene: SKScene{
     var m_lives : Int = 2
     var m_currentScore : Int = 0
     var m_maxHighScore : Int = 0
+    var m_PowerUpSpawned : Bool = false
     
     override func didMove(to view: SKView)
     {
@@ -200,7 +202,7 @@ class GameScene: SKScene{
         self.AddTopUI()
         self.AddRacketsUI()
         self.AddBricks()
-        self.AddGameBar()
+        self.AddGameRacket()
         self.AddGameBall()
     }
     
@@ -258,23 +260,6 @@ class GameScene: SKScene{
         m_Ball.physicsBody?.velocity = m_initialBallVelocity
         
         print("Game Started!")
-        
-        let brick = SKSpriteNode(imageNamed: "block_blue")
-        brick.size = CGSize(width: brick.size.width * 3, height: brick.size.height * 3)
-        brick.position = CGPoint(x: 0, y: -(self.size.height / 2) + 400)
-        brick.zPosition = 2
-        
-        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.frame.size)
-        brick.physicsBody?.friction = 0
-        brick.physicsBody?.restitution = 1
-        brick.physicsBody?.linearDamping = 0
-        brick.physicsBody?.allowsRotation = false
-        brick.physicsBody?.velocity = CGVector(dx: 0, dy: -100)
-        
-        self.addChild(brick)
-
-        
-        print("Power up created!")
     }
     
     public func ResetBall()
@@ -349,16 +334,23 @@ class GameScene: SKScene{
     func CreatePowerUp(_brick : String, xPos : CGFloat, yPos : CGFloat)
     {
         let brick = SKSpriteNode(imageNamed: _brick)
-        brick.name = "block_" + _brick
         brick.size = CGSize(width: brick.size.width * 3, height: brick.size.height * 3)
-        brick.position = CGPoint(x: xPos, y: yPos)
+        brick.position = CGPoint(x: 0, y: -(self.size.height / 2) + 400)
         brick.zPosition = 2
         
-        // Physics
         brick.physicsBody = SKPhysicsBody(rectangleOf: brick.frame.size)
         brick.physicsBody?.friction = 0
+        brick.physicsBody?.restitution = 1
+        brick.physicsBody?.linearDamping = 0
         brick.physicsBody?.allowsRotation = false
+        brick.physicsBody?.velocity = CGVector(dx: 0, dy: -100)
         
+        //BitMask
+        brick.physicsBody?.categoryBitMask = m_powerUpBitmask
+        brick.physicsBody?.contactTestBitMask = m_racketBitmask | m_ballBitmask
+        
+        self.addChild(brick)
+
         print("Power up created!")
     }
 }
