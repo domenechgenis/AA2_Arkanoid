@@ -54,11 +54,12 @@ extension GameScene : SKPhysicsContactDelegate
         {
             m_bricks -= 1;
             
-            print(String(m_bricks) + " left.")
+            print(String(m_bricks) + " left in the level")
             
             //Update Score
-            print(secondBody.node)
-            m_currentScore += 10
+            var brickName : String = secondBody.node!.name!
+    
+            m_currentScore += self.UpdatePlayerScore(_brick: brickName)
             m_gameScore.text = "1UP: " + String(self.m_currentScore)
             
             if(HasGameFinished())
@@ -71,8 +72,5 @@ extension GameScene : SKPhysicsContactDelegate
             secondBody.node?.removeFromParent()
         }
     }
-    
-    func HasGameFinished() -> Bool {
-        return m_bricks <= 0
-    }
+
 }

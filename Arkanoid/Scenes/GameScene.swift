@@ -11,9 +11,7 @@ import CoreMotion
 
 //TODO
 // -> Change between scenes instead of hide
-// -> Score
 // -> Sounds and music
-// -> Persistent Data
 // -> Power Ups
 // -> Test
 
@@ -303,5 +301,29 @@ class GameScene: SKScene{
         self.AddTextLabel()
         self.AddGamOverRetryButton()
         self.AddGameOverExitButton()
+    }
+    
+    func HasGameFinished() -> Bool {
+        return m_bricks <= 0
+    }
+    
+    func UpdatePlayerScore(_brick : String) -> Int
+    {
+        var score : Int = 10
+        switch _brick {
+        case "block_yellow":
+            score = 10
+        case "block_red":
+            score = 20
+        case "block_pink":
+            score = 30
+        case "block_green":
+            score = 40
+        case "block_blue":
+            score = 50
+        default:
+            print("Block color not identified!!!")
+        }
+        return score
     }
 }

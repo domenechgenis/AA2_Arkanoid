@@ -126,6 +126,10 @@ extension GameScene
     
     func AddBricks()
     {
+        //Remove old parameters
+        bricksArray.removeAll()
+        m_bricks = 0
+        
         //Initial offset with the borders
         var startX = -(self.size.width / 2) + 50
         var startY = (self.size.height / 2) - 200
@@ -145,6 +149,7 @@ extension GameScene
             startY -= 50.0
         }
         
+        print("Level should have : " + String(m_Rows * self.m_Columns) + " blocks.")
         print("Level created with: " + String(m_bricks) + " blocks.")
     }
     
@@ -245,7 +250,7 @@ extension GameScene
         
         //Reference Variables
         self.m_gameHighScore = SKLabelNode(text: "HIGH SCORE: " + String(self.m_maxHighScore))
-        self.m_gameHighScore.position = CGPoint(x: -(self.size.width / 2) + 400, y: self.size.height / 2 - 100)
+        self.m_gameHighScore.position = CGPoint(x: -(self.size.width / 2) + 500, y: self.size.height / 2 - 100)
         self.m_gameHighScore.fontColor = UIColor.white
         self.m_gameHighScore.fontSize = self.m_gameLabelSize
         self.m_gameHighScore.zPosition = 2
