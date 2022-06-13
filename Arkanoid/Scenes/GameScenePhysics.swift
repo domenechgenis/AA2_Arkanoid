@@ -31,7 +31,6 @@ extension GameScene : SKPhysicsContactDelegate
             self.ResetBall()
             self.m_lives -= 1
             
-            print(self.m_lives)
             if(self.m_lives == 1)
             {
                 self.m_racketArray[0].removeFromParent()
@@ -45,6 +44,7 @@ extension GameScene : SKPhysicsContactDelegate
             //Only when lives are under 0, not equal, the player lose
             else if(self.m_lives < 0)
             {
+                self.UpdateHighScore(_score: m_currentScore)
                 self.HidePlayGround()
                 self.ShowGameOverMenu()
             }
@@ -52,16 +52,23 @@ extension GameScene : SKPhysicsContactDelegate
         
         else if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_brickBitmask)
         {
-            secondBody.node?.removeFromParent()
             m_bricks -= 1;
             
             print(String(m_bricks) + " left.")
- 
+            
+            //Update Score
+            print(secondBody.node)
+            m_currentScore += 10
+            m_gameScore.text = "1UP: " + String(self.m_currentScore)
+            
             if(HasGameFinished())
             {
+                self.UpdateHighScore(_score: m_currentScore)
                 self.HidePlayGround()
             }
-        
+            
+            //Remove the brick
+            secondBody.node?.removeFromParent()
         }
     }
     

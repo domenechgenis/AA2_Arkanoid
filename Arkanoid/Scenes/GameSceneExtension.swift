@@ -170,7 +170,7 @@ extension GameScene
     func AddSingleBrick(xPos: CGFloat, yPos : CGFloat, wantedColor : String)
     {
         let brick = SKSpriteNode(imageNamed: "block_" + wantedColor)
-        brick.name = "brick0"
+        brick.name = "block_" + wantedColor
         brick.size = CGSize(width: brick.size.width * 3, height: brick.size.height * 3)
         brick.position = CGPoint(x: xPos, y: yPos)
         brick.zPosition = 2
@@ -218,8 +218,11 @@ extension GameScene
 
     }
     
-    func AddUI()
+    func AddRacketsUI()
     {
+        m_lives = 2
+        m_racketArray.removeAll()
+        
         var offsetX : CGFloat = -250
         let offsetY : CGFloat = -(self.size.height / 2) + 50
         //Add Health represented in UI
@@ -228,7 +231,25 @@ extension GameScene
             AddSingleUI(xPos: offsetX, yPos: offsetY)
             offsetX -= 50
         }
-
+    }
+    
+    func AddTopUI()
+    {
+        //Reference Variables
+        self.m_gameScore = SKLabelNode(text: "1UP: " + String(self.m_currentScore))
+        self.m_gameScore.position = CGPoint(x: -(self.size.width / 2) + 150, y: self.size.height / 2 - 100)
+        self.m_gameScore.fontColor = UIColor.white
+        self.m_gameScore.fontSize = self.m_gameLabelSize
+        self.m_gameScore.zPosition = 2
+        self.addChild(self.m_gameScore)
+        
+        //Reference Variables
+        self.m_gameHighScore = SKLabelNode(text: "HIGH SCORE: " + String(self.m_maxHighScore))
+        self.m_gameHighScore.position = CGPoint(x: -(self.size.width / 2) + 400, y: self.size.height / 2 - 100)
+        self.m_gameHighScore.fontColor = UIColor.white
+        self.m_gameHighScore.fontSize = self.m_gameLabelSize
+        self.m_gameHighScore.zPosition = 2
+        self.addChild(self.m_gameHighScore)
     }
     
     func AddSingleUI(xPos: CGFloat, yPos : CGFloat)
@@ -247,8 +268,6 @@ extension GameScene
         
         self.addChild(auxracketUI)
     }
-    
-
     
     func AddGameBall()
     {

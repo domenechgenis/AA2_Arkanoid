@@ -10,7 +10,11 @@ import SpriteKit
 import CoreMotion
 
 //TODO
-// -> Physics
+// -> Change between scenes instead of hide
+// -> Score
+// -> Sounds and music
+// -> Persistent Data
+// -> Power Ups
 // -> Test
 
 // Not working
@@ -18,21 +22,26 @@ import CoreMotion
 
 class GameScene: SKScene{
     
-    //Game Variables
-    //Constants
+    // Game Variables
+    // Constants
     let m_menuLabelSize : CGFloat = 80
+    let m_gameLabelSize : CGFloat = 40
     let m_GameBorderSize : CGFloat = 30
     let m_initialBallVelocity = CGVector(dx: 400, dy: -400)
     let m_initialBallImpulse = CGVector(dx: 10, dy: -10)
     let m_Rows : Int = 5
     let m_Columns : Int = 14
     
+    // Collisions Mask
     let m_ballBitmask : UInt32 = 0x1 << 0       // 000000000
     let m_bottomBitmask : UInt32 = 0x1 << 1     // 000000001
     let m_brickBitmask : UInt32 = 0x1 << 2      // 000000010
     let m_racketBitmask : UInt32 = 0x1 << 3     // 000001000
     
-    //Menu Varables
+    // Keys
+    let m_HighScoreKey : String = "HighScore"
+    
+    // Menu Varables
     var m_logo : SKSpriteNode!
     var m_playButtonLabel: SKLabelNode!
     var m_creditsButtonLabel: SKLabelNode!
@@ -40,6 +49,8 @@ class GameScene: SKScene{
     
     //Game variables
     var m_gameBackground : SKSpriteNode!
+    var m_gameScore: SKLabelNode!
+    var m_gameHighScore: SKLabelNode!
     var m_borderTop : SKSpriteNode!
     var m_borderLeft : SKSpriteNode!
     var m_borderRight : SKSpriteNode!
@@ -60,6 +71,8 @@ class GameScene: SKScene{
     var bricksArray : [SKSpriteNode] = []
     var m_bricks : Int = 0
     var m_lives : Int = 2
+    var m_currentScore : Int = 0
+    var m_maxHighScore : Int = 0
     
     override func didMove(to view: SKView)
     {
@@ -186,7 +199,8 @@ class GameScene: SKScene{
     {
         self.AddGameBackground()
         self.AddBorders()
-        self.AddUI()
+        self.AddTopUI()
+        self.AddRacketsUI()
         self.AddBricks()
         self.AddGameBar()
         self.AddGameBall()
@@ -201,10 +215,15 @@ class GameScene: SKScene{
         m_Ball.isHidden = false
         m_Racket.isHidden = false
         
+        self.AddBricks()
+        
+        //Recreate bricks
         for bricksArray in bricksArray {
             bricksArray.isHidden = false
         }
-                
+        
+        self.AddRacketsUI()
+        
         for racketArray in m_racketArray {
             racketArray.isHidden = false
         }
@@ -223,7 +242,7 @@ class GameScene: SKScene{
         m_Racket.isHidden = true
         
         for bricksArray in bricksArray {
-            bricksArray.isHidden = true
+            bricksArray.removeFromParent()
         }
     }
     
@@ -231,6 +250,10 @@ class GameScene: SKScene{
     {
         //Reset lives
         m_lives = 2
+        
+        // Reset Score
+        m_currentScore = 0
+        m_gameScore.text = "1UP: " + String(self.m_currentScore)
         
         //Reset ball velocity
         //m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
@@ -257,8 +280,23 @@ class GameScene: SKScene{
         self.physicsBody?.friction = 0
         self.physicsWorld.gravity = .zero
         self.physicsWorld.contactDelegate = self
+        
+        //Get High score from locals
+        let defaults : UserDefaults = .standard
+        let storedHighScore = defaults.integer(forKey: m_HighScoreKey)
+        print("Founded the following value stored:" + String(storedHighScore))
+        m_maxHighScore = storedHighScore
     }
     
+    func UpdateHighScore(_score : Int)
+    {
+        if(_score > m_maxHighScore)
+        {
+            m_maxHighScore = _score
+            let defaults : UserDefaults = .standard
+            defaults.setValue(m_maxHighScore, forKey: m_HighScoreKey)
+        }
+    }
     
     func CreateGameOverMenu()
     {
