@@ -87,7 +87,7 @@ extension GameScene
         self.m_borderTop = SKSpriteNode(imageNamed: "border_top")
         self.m_borderTop.name = "borderTop"
         self.m_borderTop.size = CGSize(width: self.size.width, height: m_GameBorderSize)
-        self.m_borderTop.position = CGPoint(x: 0, y: self.size.height / 2)
+        self.m_borderTop.position = CGPoint(x: 0, y: self.size.height / 2 - 125)
         self.m_borderTop.zPosition = 1
         self.addChild(self.m_borderTop)
         
@@ -102,7 +102,7 @@ extension GameScene
         self.m_borderLeft = SKSpriteNode(imageNamed: "border_left")
         self.m_borderLeft.name = "borderLeft"
         self.m_borderLeft.size = CGSize(width: m_GameBorderSize, height: self.size.height)
-        self.m_borderLeft.position = CGPoint(x: -(self.size.width / 2), y: 0)
+        self.m_borderLeft.position = CGPoint(x: -(self.size.width / 2), y: 0 - 125)
         self.m_borderLeft.zPosition = 1
         self.addChild(self.m_borderLeft)
         
@@ -110,9 +110,13 @@ extension GameScene
         self.m_borderRight = SKSpriteNode(imageNamed: "border_right")
         self.m_borderRight.name = "borderRight"
         self.m_borderRight.size = CGSize(width: m_GameBorderSize, height: self.size.height)
-        self.m_borderRight.position = CGPoint(x: (self.size.width / 2), y: 0)
+        self.m_borderRight.position = CGPoint(x: (self.size.width / 2), y: 0 - 125)
         self.m_borderRight.zPosition = 1
         self.addChild(self.m_borderRight)
+        
+        self.AddStaticphysics(_border: m_borderTop)
+        self.AddStaticphysics(_border: m_borderLeft)
+        self.AddStaticphysics(_border: m_borderRight)
         
         //Hide it
         self.m_borderLeft.isHidden = true
@@ -122,7 +126,8 @@ extension GameScene
     
     func AddBricks()
     {
-        var startX = -(self.size.width / 2) + 85
+        //Initial offset with the borders
+        var startX = -(self.size.width / 2) + 50
         var startY = (self.size.height / 2) - 200
         var wantedColor = "blue"
         
@@ -130,12 +135,13 @@ extension GameScene
         {
             for _ in 1 ... m_Columns
             {
+                // Offset with each brick
                 AddSingleBrick(xPos: startX, yPos: startY,wantedColor: wantedColor)
-                startX += 150
+                startX += 50
             }
             
             wantedColor = GetNextColorBrick(index: i)
-            startX = -(self.size.width / 2) + 85
+            startX = -(self.size.width / 2) + 50
             startY -= 50.0
         }
         
@@ -165,7 +171,7 @@ extension GameScene
     {
         let brick = SKSpriteNode(imageNamed: "block_" + wantedColor)
         brick.name = "brick0"
-        brick.size = CGSize(width: brick.size.width * 5, height: brick.size.height * 3)
+        brick.size = CGSize(width: brick.size.width * 3, height: brick.size.height * 3)
         brick.position = CGPoint(x: xPos, y: yPos)
         brick.zPosition = 2
         
@@ -212,6 +218,38 @@ extension GameScene
 
     }
     
+    func AddUI()
+    {
+        var offsetX : CGFloat = -250
+        let offsetY : CGFloat = -(self.size.height / 2) + 50
+        //Add Health represented in UI
+        for _ in 1 ... m_lives
+        {
+            AddSingleUI(xPos: offsetX, yPos: offsetY)
+            offsetX -= 50
+        }
+
+    }
+    
+    func AddSingleUI(xPos: CGFloat, yPos : CGFloat)
+    {
+        let auxracketUI = SKSpriteNode(imageNamed: "racket")
+        auxracketUI.name = "racketUI"
+        auxracketUI.size = CGSize(width: auxracketUI.size.width * 1.5, height : auxracketUI.size.height * 1.5)
+        auxracketUI.position = CGPoint(x: xPos, y: yPos)
+        auxracketUI.zPosition = 2
+        
+        //Hide it
+        auxracketUI.isHidden = true
+                
+        //Brick Counter
+        m_racketArray.append(auxracketUI)
+        
+        self.addChild(auxracketUI)
+    }
+    
+
+    
     func AddGameBall()
     {
         self.m_Ball = SKSpriteNode(imageNamed: "ball")
@@ -234,6 +272,18 @@ extension GameScene
         //BitMask
         self.m_Ball.physicsBody?.categoryBitMask = m_ballBitmask
         self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask | m_brickBitmask
+    }
+    
+    func AddStaticphysics(_border : SKSpriteNode)
+    {
+        // Physics
+        _border.physicsBody = SKPhysicsBody(rectangleOf: _border.frame.size)
+        _border.physicsBody?.friction = 0.4
+        _border.physicsBody?.restitution = 0.1
+        _border.physicsBody?.isDynamic = false
+        
+        //BitMask
+        _border.physicsBody?.categoryBitMask = m_racketBitmask
     }
     
     // GAME OVER FUNCTIONS

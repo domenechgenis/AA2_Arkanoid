@@ -16,17 +16,21 @@ class GameOverScene : SKScene
     let m_GameBorderSize : CGFloat = 30
     
     //Menu Varables
-    var m_menuBackground : SKSpriteNode!
-    var m_logo : SKSpriteNode!
-    var m_playButtonLabel: SKLabelNode!
-    var m_creditsButtonLabel: SKLabelNode!
-    var m_exitButtonLabel: SKLabelNode!
+    var m_GameOverlogo : SKSpriteNode!
+    var m_GameOverplayButtonLabel: SKLabelNode!
+    var m_GameOvercreditsButtonLabel: SKLabelNode!
+    var m_GameOverexitButtonLabel: SKLabelNode!
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        let transition:SKTransition = SKTransition.fade(withDuration: 1)
-        let scene : SKScene = GameScene(size: self.frame.size)
-        scene.scaleMode = .aspectFit
-        self.view?.presentScene(scene,transition: transition)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        let reveal = SKTransition.reveal(with: .down,duration: 1)
+        let newScene = GameScene(size: CGSize(width: self.frame.width, height: self.frame.height))
+        newScene.scaleMode = .aspectFill
+        view?.presentScene(newScene,transition: reveal)
+    }
+    
+    override func didMove(to view: SKView)
+    {
+        self.AddGameOverMenuLogo()
     }
 }

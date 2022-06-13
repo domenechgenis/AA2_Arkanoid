@@ -29,10 +29,21 @@ extension GameScene : SKPhysicsContactDelegate
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_bottomBitmask)
         {
             self.ResetBall()
-            
             self.m_lives -= 1
             
-            if(self.m_lives <= 0)
+            print(self.m_lives)
+            if(self.m_lives == 1)
+            {
+                self.m_racketArray[0].removeFromParent()
+            }
+            
+            else if(self.m_lives == 0)
+            {
+                self.m_racketArray[1].removeFromParent()
+            }
+            
+            //Only when lives are under 0, not equal, the player lose
+            else if(self.m_lives < 0)
             {
                 self.HidePlayGround()
                 self.ShowGameOverMenu()

@@ -22,10 +22,10 @@ class GameScene: SKScene{
     //Constants
     let m_menuLabelSize : CGFloat = 80
     let m_GameBorderSize : CGFloat = 30
-    let m_initialBallSpeed = CGVector(dx: 10, dy: -10)
+    let m_initialBallVelocity = CGVector(dx: 400, dy: -400)
+    let m_initialBallImpulse = CGVector(dx: 10, dy: -10)
     let m_Rows : Int = 5
-    let m_Columns : Int = 5
-    let m_BrickPadding : Int = 40
+    let m_Columns : Int = 14
     
     let m_ballBitmask : UInt32 = 0x1 << 0       // 000000000
     let m_bottomBitmask : UInt32 = 0x1 << 1     // 000000001
@@ -43,6 +43,7 @@ class GameScene: SKScene{
     var m_borderTop : SKSpriteNode!
     var m_borderLeft : SKSpriteNode!
     var m_borderRight : SKSpriteNode!
+    var m_racketArray : [SKSpriteNode] = []
     var m_Racket : SKSpriteNode!
     var m_Ball : SKSpriteNode!
     
@@ -58,7 +59,7 @@ class GameScene: SKScene{
     // Game info
     var bricksArray : [SKSpriteNode] = []
     var m_bricks : Int = 0
-    var m_lives : Int = 3
+    var m_lives : Int = 2
     
     override func didMove(to view: SKView)
     {
@@ -88,6 +89,9 @@ class GameScene: SKScene{
           }
             else if(touchedNode.name == m_gameOverRetryButtonLabel.name){
                 RetryPressed()
+          }
+            else if(touchedNode.name == m_creditsButtonLabel.name){
+                CreditsPressed()
           }
             else if(touchedNode.name == m_exitButtonLabel.name){
               print("Exit Button Pressed")
@@ -172,9 +176,9 @@ class GameScene: SKScene{
     
     private func CreditsPressed()
     {
-        //Exit does not compliance with the iOS Human Interface Guidelines, as required by the App Store Review Guidelines.
-        // But for educational pruposes, its implemented
-        exit(0)
+        let reveal = SKTransition.reveal(with: .down,duration: 1)
+        let newScene = GameOverScene(size: CGSize(width: self.frame.width, height: self.frame.height))
+        view?.presentScene(newScene,transition: reveal)
     }
     
     // Game Functions
@@ -182,6 +186,7 @@ class GameScene: SKScene{
     {
         self.AddGameBackground()
         self.AddBorders()
+        self.AddUI()
         self.AddBricks()
         self.AddGameBar()
         self.AddGameBall()
@@ -198,6 +203,10 @@ class GameScene: SKScene{
         
         for bricksArray in bricksArray {
             bricksArray.isHidden = false
+        }
+                
+        for racketArray in m_racketArray {
+            racketArray.isHidden = false
         }
         
         //All Enabled, start game
@@ -221,10 +230,11 @@ class GameScene: SKScene{
     private func StartGame()
     {
         //Reset lives
-        m_lives = 3
+        m_lives = 2
         
         //Reset ball velocity
-        m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
+        //m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
+        m_Ball.physicsBody?.velocity = m_initialBallVelocity
     }
     
     public func ResetBall()
@@ -234,7 +244,10 @@ class GameScene: SKScene{
         action = SKAction.moveTo(y: 0, duration: 0)
         action.timingMode = .easeInEaseOut
         self.m_Ball.run(action)
-        m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
+        
+        //Reset ball velocity
+        //m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
+        m_Ball.physicsBody?.velocity = m_initialBallVelocity
     }
     
     private func CreateWorldSettings()
