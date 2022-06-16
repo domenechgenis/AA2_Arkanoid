@@ -56,6 +56,7 @@ class GameScene: SKScene{
     var m_racketArray : [SKSpriteNode] = []
     var m_Racket : SKSpriteNode!
     var m_Ball : SKSpriteNode!
+    var m_BallAux : SKSpriteNode!
     var m_PowerUp : SKSpriteNode!
     
     //Game over variables
@@ -75,7 +76,12 @@ class GameScene: SKScene{
     var m_maxHighScore : Int = 0
     var m_updatesCalled : Int = 0
     var m_PowerUpSpawned : Bool = false
-    var m_Count : Int = 0
+    var m_GameStarted : Bool = false
+    var m_PowerUpBigApplied : Bool = false
+    var m_PowerUpBallApplied : Bool = false
+    var m_originalRacketSize : CGSize!
+    
+    var m_Count : Int = 10
     
     override func didMove(to view: SKView)
     {
@@ -302,9 +308,28 @@ class GameScene: SKScene{
         m_gameScore.isHidden = false
         m_gameHighScore.isHidden = false
         
+        if(m_PowerUpBigApplied){
+            m_Racket.size = CGSize(width: m_Racket.size.width * 1.2, height: m_Racket.size.height * 1.2)
+        
+            // Physics
+            self.m_Racket.physicsBody = SKPhysicsBody(rectangleOf: m_Racket.frame.size)
+            self.m_Racket.physicsBody?.friction = 0.4
+            self.m_Racket.physicsBody?.restitution = 0.1
+            self.m_Racket.physicsBody?.isDynamic = false
+        }
+
+        if(m_PowerUpBallApplied){
+            m_BallAux.removeFromParent()
+        }
+
+        
         //Allow power up
         m_PowerUpSpawned = false
+        m_PowerUpBigApplied = false
         
+        m_GameStarted = true
+        
+    
         
         print("Game Started!")
     }
@@ -380,38 +405,31 @@ class GameScene: SKScene{
     func EnablePowerUp(userTouched : Bool, _brick : String){
         
         print(_brick)
-        //if user touched, activate the power up
+        //if user touched the power up, activate the power up
         if(userTouched == true){
             switch _brick {
-                //Power up yellow only gives more score
             case "block_yellow":
-                m_currentScore += self.UpdatePlayerScore(_brick: _brick)
-                m_gameScore.text = "1UP: " + String(self.m_currentScore)
-                //Power up yellow makes the bar bigger
+                //Power up yellow only gives more score
+                YellowPowerUP(_brick: _brick)
+    
             case "block_red":
-                m_Racket.size = CGSize(width: m_Racket.size.width * 4, height: m_Racket.size.height * 3)
-                m_Racket.physicsBody = SKPhysicsBody(rectangleOf: m_Racket.frame.size)
-            case "block_pink":
-                print("Multiple Shoot!")
-            case "block_green":
-                print("Adding live!")
-                if(self.m_lives < 2){
-                    self.m_lives += 1
-                    self.AddRacketsUI()
-                }else{
-                    print("Already have max live, incrementing score!")
-                    m_currentScore += self.UpdatePlayerScore(_brick: _brick)
-                    m_gameScore.text = "1UP: " + String(self.m_currentScore)
-                }
+                //Power up red makes the bar bigger
+                RedPowerUp(_brick : _brick)
                 
+            case "block_pink":
+                //Power up pink spawn a second ball
+                PinkPowerUp(_brick : _brick)
+                
+            case "block_green":
+                //Power up green give you one live
+                GreenPowerUp(_brick: _brick)
                 
             case "block_blue":
-                print("Invulnerability!")
-                
+                //Power up yellow makes you invulnerable
+                BluePowerUp(_brick : _brick)
             default:
                 print("Block color not identified!!!")
             }
-            
         }
         
         //Touched or not, remove it
@@ -419,20 +437,80 @@ class GameScene: SKScene{
         m_PowerUpSpawned = false
     }
     
-    func ReturnAction(){
-        if(m_updatesCalled == 1){
-            self.m_updatesCalled = 0
+    //Power Up Functions
+    func YellowPowerUP(_brick : String){
+        m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+        m_gameScore.text = "1UP: " + String(self.m_currentScore)
+    }
+    
+    func RedPowerUp(_brick : String){
+        if(m_PowerUpBigApplied != true){
+            m_PowerUpBigApplied = true
+            m_Racket.size = CGSize(width: m_Racket.size.width * 1.2, height: m_Racket.size.height * 1.2)
+        
+            // Physics
+            self.m_Racket.physicsBody = SKPhysicsBody(rectangleOf: m_Racket.frame.size)
+            self.m_Racket.physicsBody?.friction = 0.4
+            self.m_Racket.physicsBody?.restitution = 0.1
+            self.m_Racket.physicsBody?.isDynamic = false
+            
+            let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
+                SKAction.run(countdownAction)])
+
+            run(SKAction.sequence([SKAction.repeat(counterDecrement, count: 10),
+                SKAction.run(endCountdown)]))
+        }else{
+            print("Already incremented the size of the racket, incrementing score!")
+            m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+            m_gameScore.text = "1UP: " + String(self.m_currentScore)
         }
     }
     
-    //Counters
+    func GreenPowerUp(_brick : String){
+        if(self.m_lives < 2){
+            self.m_lives += 1
+            self.AddRacketsUI()
+        }else{
+            print("Already have max live, incrementing score!")
+            m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+            m_gameScore.text = "1UP: " + String(self.m_currentScore)
+        }
+    }
     
+    func BluePowerUp(_brick : String){
+        
+    }
+    
+    func PinkPowerUp(_brick : String){
+        if(!m_PowerUpBallApplied){
+            AddSecondGameBall()
+        }else{
+            print("Already a second ball in game, incrementing score!")
+            m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+            m_gameScore.text = "1UP: " + String(self.m_currentScore)
+        }
+        
+    }
+    
+    //Counters
     func countdownAction() {
         m_Count -= 1
-        print(m_Count)
+        
     }
 
     func endCountdown() {
         m_Count = 10
+        print("Power Up finished!")
+        
+        //Return original size
+        self.m_Racket.size = CGSize(width: m_originalRacketSize.width, height: m_originalRacketSize.height)
+
+        // Physics
+        self.m_Racket.physicsBody = SKPhysicsBody(rectangleOf: m_Racket.frame.size)
+        self.m_Racket.physicsBody?.friction = 0.4
+        self.m_Racket.physicsBody?.restitution = 0.1
+        self.m_Racket.physicsBody?.isDynamic = false
+        
+        m_PowerUpBigApplied = false
     }
 }

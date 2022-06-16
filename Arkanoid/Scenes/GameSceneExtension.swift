@@ -218,6 +218,9 @@ extension GameScene
         self.m_Racket.physicsBody?.restitution = 0.1
         self.m_Racket.physicsBody?.isDynamic = false
         
+        //Power up
+        m_originalRacketSize = self.m_Racket.size
+        
         //BitMask
         self.m_Racket.physicsBody?.categoryBitMask = m_racketBitmask
 
@@ -295,7 +298,7 @@ extension GameScene
         self.m_Ball.isHidden = true
         
         // Physics
-        self.m_Ball.physicsBody = SKPhysicsBody(circleOfRadius: self.m_Ball.frame.size.width / 2)
+        self.m_Ball.physicsBody = SKPhysicsBody(rectangleOf: m_Ball.frame.size)
         self.m_Ball.physicsBody?.friction = 0
         self.m_Ball.physicsBody?.restitution = 1
         self.m_Ball.physicsBody?.linearDamping = 0
@@ -304,6 +307,29 @@ extension GameScene
         //BitMask
         self.m_Ball.physicsBody?.categoryBitMask = m_ballBitmask
         self.m_Ball.physicsBody?.contactTestBitMask = m_bottomBitmask | m_brickBitmask
+    }
+    
+    func AddSecondGameBall()
+    {
+        self.m_BallAux = SKSpriteNode(imageNamed: "ball")
+        self.m_BallAux.name = "ballAux"
+        self.m_BallAux.size = CGSize(width: m_BallAux.size.width * 4, height: m_BallAux.size.height * 4)
+        self.m_BallAux.position = CGPoint(x: 0, y: 0)
+        self.m_BallAux.zPosition = 2
+        self.m_BallAux.color = .red
+        self.addChild(self.m_BallAux)
+                
+        // Physics
+        self.m_BallAux.physicsBody = SKPhysicsBody(rectangleOf: m_BallAux.frame.size)
+        self.m_BallAux.physicsBody?.friction = 0
+        self.m_BallAux.physicsBody?.restitution = 1
+        self.m_BallAux.physicsBody?.linearDamping = 0
+        self.m_BallAux.physicsBody?.allowsRotation = false
+        self.m_BallAux.physicsBody?.velocity = m_initialBallVelocity
+        
+        //BitMask
+        self.m_BallAux.physicsBody?.categoryBitMask = m_ballBitmask
+        self.m_BallAux.physicsBody?.contactTestBitMask = m_bottomBitmask | m_brickBitmask
     }
     
     func AddStaticphysics(_border : SKSpriteNode)
