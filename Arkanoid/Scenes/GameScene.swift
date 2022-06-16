@@ -256,8 +256,11 @@ class GameScene: SKScene{
         m_gameScore.text = "1UP: " + String(self.m_currentScore)
         
         //Reset ball velocity
-        //m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
         m_Ball.physicsBody?.velocity = m_initialBallVelocity
+        
+        m_gameScore.isHidden = false
+        m_gameHighScore.isHidden = false
+        
         
         print("Game Started!")
     }
@@ -271,7 +274,6 @@ class GameScene: SKScene{
         self.m_Ball.run(action)
         
         //Reset ball velocity
-        //m_Ball.physicsBody?.applyImpulse(m_initialBallSpeed)
         m_Ball.physicsBody?.velocity = m_initialBallVelocity
     }
     
@@ -347,10 +349,10 @@ class GameScene: SKScene{
         
         //BitMask
         brick.physicsBody?.categoryBitMask = m_powerUpBitmask
-        brick.physicsBody?.contactTestBitMask = m_racketBitmask | m_ballBitmask
+        brick.physicsBody?.contactTestBitMask = m_racketBitmask | m_ballBitmask | m_bottomBitmask
         
         self.addChild(brick)
-
+        
         print("Power up created!")
     }
 }

@@ -257,7 +257,7 @@ extension GameScene
         self.m_gameHighScore.fontSize = self.m_gameLabelSize
         self.m_gameHighScore.zPosition = 2
         
-        self.m_gameScore.isHidden = true
+        self.m_gameHighScore.isHidden = true
         self.addChild(self.m_gameHighScore)
     }
     
