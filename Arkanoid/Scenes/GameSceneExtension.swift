@@ -246,6 +246,8 @@ extension GameScene
         self.m_gameScore.fontColor = UIColor.white
         self.m_gameScore.fontSize = self.m_gameLabelSize
         self.m_gameScore.zPosition = 2
+        
+        self.m_gameScore.isHidden = true
         self.addChild(self.m_gameScore)
         
         //Reference Variables
@@ -254,6 +256,8 @@ extension GameScene
         self.m_gameHighScore.fontColor = UIColor.white
         self.m_gameHighScore.fontSize = self.m_gameLabelSize
         self.m_gameHighScore.zPosition = 2
+        
+        self.m_gameScore.isHidden = true
         self.addChild(self.m_gameHighScore)
     }
     
