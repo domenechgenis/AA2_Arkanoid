@@ -75,6 +75,7 @@ class GameScene: SKScene{
     var m_maxHighScore : Int = 0
     var m_updatesCalled : Int = 0
     var m_PowerUpSpawned : Bool = false
+    var m_Count : Int = 0
     
     override func didMove(to view: SKView)
     {
@@ -219,6 +220,11 @@ class GameScene: SKScene{
         self.AddBricks()
         self.AddGameRacket()
         self.AddGameBall()
+        
+        //Recreate bricks
+        for racketArray in m_racketArray {
+            racketArray.isHidden = true
+        }
     }
     
     private func ShowPlayGround()
@@ -237,6 +243,7 @@ class GameScene: SKScene{
             bricksArray.isHidden = false
         }
         
+        self.m_lives = 2
         self.AddRacketsUI()
         
         for racketArray in m_racketArray {
@@ -265,6 +272,11 @@ class GameScene: SKScene{
         //Bricks
         for bricksArray in bricksArray {
             bricksArray.removeFromParent()
+        }
+        
+        //Recreate bricks
+        for racketArray in m_racketArray {
+            racketArray.isHidden = true
         }
     }
     
@@ -371,17 +383,25 @@ class GameScene: SKScene{
         //if user touched, activate the power up
         if(userTouched == true){
             switch _brick {
-            case "block_yellow":
-                m_currentScore += self.UpdatePlayerScore(_brick: _brick)
-                m_gameScore.text = "1UP: " + String(self.m_currentScore)
+            //case "block_yellow":
+                //m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+                //m_gameScore.text = "1UP: " + String(self.m_currentScore)
             case "block_red":
                 print("Making the bar bigger!")
-                
             case "block_pink":
                 print("Multiple Shoot!")
                 
-            case "block_green":
-                print("Spawning health!")
+            case "block_yellow":
+                print("Adding live!")
+                if(self.m_lives < 2){
+                    self.m_lives += 1
+                    self.AddRacketsUI()
+                }else{
+                    print("Already have max live, incrementing score!")
+                    m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+                    m_gameScore.text = "1UP: " + String(self.m_currentScore)
+                }
+                
                 
             case "block_blue":
                 print("Invulnerability!")
@@ -401,5 +421,16 @@ class GameScene: SKScene{
         if(m_updatesCalled == 1){
             self.m_updatesCalled = 0
         }
+    }
+    
+    //Counters
+    
+    func countdownAction() {
+        m_Count -= 1
+        print(m_Count)
+    }
+
+    func endCountdown() {
+        m_Count = 10
     }
 }

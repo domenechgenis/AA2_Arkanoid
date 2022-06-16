@@ -223,9 +223,16 @@ extension GameScene
 
     }
     
+    func RemoveRacketsUI()
+    {
+        for racketArray in m_racketArray {
+            racketArray.removeFromParent()
+        }
+    }
+    
     func AddRacketsUI()
     {
-        m_lives = 2
+        RemoveRacketsUI()
         m_racketArray.removeAll()
         
         var offsetX : CGFloat = -250
@@ -268,9 +275,6 @@ extension GameScene
         auxracketUI.size = CGSize(width: auxracketUI.size.width * 1.5, height : auxracketUI.size.height * 1.5)
         auxracketUI.position = CGPoint(x: xPos, y: yPos)
         auxracketUI.zPosition = 2
-        
-        //Hide it
-        auxracketUI.isHidden = true
                 
         //Brick Counter
         m_racketArray.append(auxracketUI)
