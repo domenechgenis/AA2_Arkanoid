@@ -31,14 +31,8 @@ extension GameScene : SKPhysicsContactDelegate
             self.ResetBall()
             self.m_lives -= 1
             
-            if(self.m_lives == 1)
-            {
-                self.m_racketArray[0].removeFromParent()
-            }
-            
-            else if(self.m_lives == 0)
-            {
-                self.m_racketArray[1].removeFromParent()
+            if(self.m_lives >= 0){
+                self.m_racketArray[m_lives].removeFromParent()
             }
             
             //Only when lives are under 0, not equal, the player lose

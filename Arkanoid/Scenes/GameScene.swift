@@ -383,15 +383,17 @@ class GameScene: SKScene{
         //if user touched, activate the power up
         if(userTouched == true){
             switch _brick {
-            //case "block_yellow":
-                //m_currentScore += self.UpdatePlayerScore(_brick: _brick)
-                //m_gameScore.text = "1UP: " + String(self.m_currentScore)
+                //Power up yellow only gives more score
+            case "block_yellow":
+                m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+                m_gameScore.text = "1UP: " + String(self.m_currentScore)
+                //Power up yellow makes the bar bigger
             case "block_red":
-                print("Making the bar bigger!")
+                m_Racket.size = CGSize(width: m_Racket.size.width * 4, height: m_Racket.size.height * 3)
+                m_Racket.physicsBody = SKPhysicsBody(rectangleOf: m_Racket.frame.size)
             case "block_pink":
                 print("Multiple Shoot!")
-                
-            case "block_yellow":
+            case "block_green":
                 print("Adding live!")
                 if(self.m_lives < 2){
                     self.m_lives += 1
