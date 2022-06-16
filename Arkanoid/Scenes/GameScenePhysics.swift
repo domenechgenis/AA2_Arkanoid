@@ -49,13 +49,7 @@ extension GameScene : SKPhysicsContactDelegate
                 self.ShowGameOverMenu()
             }
         }
-        
-        if(firstBody.categoryBitMask == m_powerUpBitmask && secondBody.categoryBitMask == m_bottomBitmask)
-        {
-            print("Power up reached the ground")
-        }
-        
-        
+                
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_brickBitmask)
         {
             m_bricks -= 1;
@@ -86,14 +80,11 @@ extension GameScene : SKPhysicsContactDelegate
             secondBody.node?.removeFromParent()
         }
         
-        if(firstBody.categoryBitMask == m_powerUpBitmask && secondBody.categoryBitMask == m_racketBitmask)
+        if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_powerUpBitmask)
         {
-            print("The power up reached the racket!!")
-        }
-        
-        if(firstBody.categoryBitMask == m_powerUpBitmask && secondBody.categoryBitMask == m_ballBitmask)
-        {
-            print("The power up reached the ball!!")
+            //Remove the power up
+            print("The ball hitted the power up!!")
+            secondBody.node?.removeFromParent()
         }
     }
 

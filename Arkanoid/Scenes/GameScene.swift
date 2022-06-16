@@ -113,7 +113,7 @@ class GameScene: SKScene{
           }
             if(m_PowerUpSpawned){
                 if(touchedNode.name == m_PowerUp.name){
-                  EnablePowerUp()
+                    EnablePowerUp(userTouched: true, _brick: m_PowerUp.name!)
               }
             }
         }
@@ -131,10 +131,8 @@ class GameScene: SKScene{
     
     override func update(_ currentTime: TimeInterval) {
         if(m_PowerUpSpawned){
-            print(currentTime)
-        
             if(m_PowerUp.position.y < (-(self.size.height / 2) + 400)){
-                EnablePowerUp()
+                EnablePowerUp(userTouched: false, _brick: m_PowerUp.name!)
             }
         }
     }
@@ -349,7 +347,30 @@ class GameScene: SKScene{
         return score
     }
     
-    func EnablePowerUp(){
+    func EnablePowerUp(userTouched : Bool, _brick : String){
+        
+        print(_brick)
+        //if user touched, activate the power up
+        if(userTouched == true){
+            switch _brick {
+            case "block_yellow":
+                m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+                m_gameScore.text = "1UP: " + String(self.m_currentScore)
+            //case "block_red":
+                
+            //case "block_pink":
+                
+            //case "block_green":
+                
+            //case "block_blue":
+                
+            default:
+                print("Block color not identified!!!")
+            }
+            
+        }
+        
+        //Touched or not, remove it
         m_PowerUp.removeFromParent()
         m_PowerUpSpawned = false
     }

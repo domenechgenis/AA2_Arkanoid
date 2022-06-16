@@ -317,7 +317,7 @@ extension GameScene
     func CreatePowerUp(_brick : String, xPos : CGFloat, yPos : CGFloat)
     {
         self.m_PowerUp = SKSpriteNode(imageNamed: _brick)
-        self.m_PowerUp.name = "powerUp"
+        self.m_PowerUp.name = _brick
         self.m_PowerUp.size = CGSize(width: self.m_PowerUp.size.width * 3, height:  self.m_PowerUp.size.height * 3)
         self.m_PowerUp.position = CGPoint(x: xPos, y: yPos)
         self.m_PowerUp.zPosition = 2
@@ -330,6 +330,10 @@ extension GameScene
         self.m_PowerUp.physicsBody?.velocity = CGVector(dx: 0, dy: -100)
     
         self.addChild( self.m_PowerUp)
+        
+        //BitMask
+        self.m_PowerUp.physicsBody?.categoryBitMask = m_powerUpBitmask
+        
         
         print("Power up created!")
     }
