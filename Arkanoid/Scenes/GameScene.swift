@@ -28,7 +28,7 @@ class GameScene: SKScene{
     let m_initialBallVelocity = CGVector(dx: 400, dy: -400)
     let m_initialBallImpulse = CGVector(dx: 10, dy: -10)
     let m_Rows : Int = 5
-    let m_Columns : Int = 14
+    let m_Columns : Int = 13
     
     // Collisions Mask
     let m_ballBitmask : UInt32 = 0x1 << 0       // 000000000
@@ -78,10 +78,12 @@ class GameScene: SKScene{
     var m_PowerUpSpawned : Bool = false
     var m_GameStarted : Bool = false
     var m_PowerUpBigApplied : Bool = false
+    var m_PowerUpInvulneravilityApplied : Bool = false
     var m_PowerUpBallApplied : Bool = false
     var m_originalRacketSize : CGSize!
     
     var m_Count : Int = 10
+    var m_CountInvu : Int = 10
     
     override func didMove(to view: SKView)
     {
@@ -270,7 +272,7 @@ class GameScene: SKScene{
         m_Ball.isHidden = true
         m_Racket.isHidden = true
         
-        //Power uP
+        //Power up
         if(m_PowerUpSpawned){
             m_PowerUp.removeFromParent()
         }
@@ -321,15 +323,13 @@ class GameScene: SKScene{
         if(m_PowerUpBallApplied){
             m_BallAux.removeFromParent()
         }
-
         
         //Allow power up
         m_PowerUpSpawned = false
         m_PowerUpBigApplied = false
+        m_PowerUpBigApplied = false
         
         m_GameStarted = true
-        
-    
         
         print("Game Started!")
     }
@@ -478,11 +478,24 @@ class GameScene: SKScene{
     }
     
     func BluePowerUp(_brick : String){
-        
+        if(!m_PowerUpInvulneravilityApplied){
+            m_PowerUpInvulneravilityApplied = true
+            let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
+                SKAction.run(countdownActionInvulnerability)])
+
+            run(SKAction.sequence([SKAction.repeat(counterDecrement, count: 10),
+                SKAction.run(endCountdownInvulnerability)]))
+            
+        }else{
+            print("Already have max live, incrementing score!")
+            m_currentScore += self.UpdatePlayerScore(_brick: _brick)
+            m_gameScore.text = "1UP: " + String(self.m_currentScore)
+        }
     }
     
     func PinkPowerUp(_brick : String){
         if(!m_PowerUpBallApplied){
+            m_PowerUpBallApplied = true
             AddSecondGameBall()
         }else{
             print("Already a second ball in game, incrementing score!")
@@ -495,7 +508,6 @@ class GameScene: SKScene{
     //Counters
     func countdownAction() {
         m_Count -= 1
-        
     }
 
     func endCountdown() {
@@ -512,5 +524,17 @@ class GameScene: SKScene{
         self.m_Racket.physicsBody?.isDynamic = false
         
         m_PowerUpBigApplied = false
+    }
+    
+    //Counters
+    func countdownActionInvulnerability() {
+        m_CountInvu -= 1
+        
+    }
+
+    func endCountdownInvulnerability() {
+        m_CountInvu = 10
+        print("Power Up finished!")
+        m_PowerUpInvulneravilityApplied = false
     }
 }

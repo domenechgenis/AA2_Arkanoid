@@ -131,7 +131,7 @@ extension GameScene
         m_bricks = 0
         
         //Initial offset with the borders
-        var startX = -(self.size.width / 2) + 50
+        var startX = -(self.size.width / 2) + 70
         var startY = (self.size.height / 2) - 200
         var wantedColor = "blue"
         
@@ -145,7 +145,7 @@ extension GameScene
             }
             
             wantedColor = GetNextColorBrick(index: i)
-            startX = -(self.size.width / 2) + 50
+            startX = -(self.size.width / 2) + 70
             startY -= 50.0
         }
         

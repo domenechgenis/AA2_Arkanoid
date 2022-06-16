@@ -28,32 +28,33 @@ extension GameScene : SKPhysicsContactDelegate
         //Delegates
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_bottomBitmask)
         {
-            if(m_PowerUpBallApplied)
+            if(!m_PowerUpInvulneravilityApplied)
             {
-                if (firstBody.node?.name! == self.m_BallAux.name)
+                if(m_PowerUpBallApplied)
                 {
-                    firstBody.node?.removeFromParent()
-                    m_PowerUpBallApplied = false
-                }
-            }else{
-                
-                self.m_lives -= 1
-                self.ResetBall()
-                
-                if(self.m_lives >= 0){
-                    self.m_racketArray[m_lives].removeFromParent()
-                }
-                
-                //Only when lives are under 0, not equal, the player lose
-                else if(self.m_lives < 0)
-                {
-                    self.UpdateHighScore(_score: m_currentScore)
-                    self.HidePlayGround()
-                    self.ShowGameOverMenu()
+                    if (firstBody.node?.name! == self.m_BallAux.name)
+                    {
+                        firstBody.node?.removeFromParent()
+                        m_PowerUpBallApplied = false
+                    }
+                }else{
+                    
+                    self.m_lives -= 1
+                    self.ResetBall()
+                    
+                    if(self.m_lives >= 0){
+                        self.m_racketArray[m_lives].removeFromParent()
+                    }
+                    
+                    //Only when lives are under 0, not equal, the player lose
+                    else if(self.m_lives < 0)
+                    {
+                        self.UpdateHighScore(_score: m_currentScore)
+                        self.HidePlayGround()
+                        self.ShowGameOverMenu()
+                    }
                 }
             }
-            
-            
         }
                 
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_brickBitmask)
