@@ -52,40 +52,46 @@ extension GameScene : SKPhysicsContactDelegate
                 
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_brickBitmask)
         {
-            m_bricks -= 1;
-            
-            print(String(m_bricks) + " left in the level")
-            
-            //Update Score
-            let brickName : String = secondBody.node!.name!
-            m_currentScore += self.UpdatePlayerScore(_brick: brickName)
-            m_gameScore.text = "1UP: " + String(self.m_currentScore)
-            
-            //Create power up
-            if(!m_PowerUpSpawned)
-            {
-                let brickX : CGFloat = secondBody.node!.position.x
-                let brickY : CGFloat = secondBody.node!.position.y
-                self.CreatePowerUp(_brick: brickName, xPos: brickX, yPos: brickY)
-                m_PowerUpSpawned = true
+            if(self.m_updatesCalled == 0){
+                
+                m_updatesCalled += 1
+                m_bricks -= 1
+                
+                print(String(m_bricks) + " left in the level")
+                
+                //Update Score
+                let brickName : String = secondBody.node!.name!
+                m_currentScore += self.UpdatePlayerScore(_brick: brickName)
+                m_gameScore.text = "1UP: " + String(self.m_currentScore)
+                
+                //Create power up
+                if(!m_PowerUpSpawned)
+                {
+                    let brickX : CGFloat = secondBody.node!.position.x
+                    let brickY : CGFloat = secondBody.node!.position.y
+                    self.CreatePowerUp(_brick: brickName, xPos: brickX, yPos: brickY)
+                    m_PowerUpSpawned = true
+                }
+                
+                if(HasGameFinished())
+                {
+                    self.UpdateHighScore(_score: m_currentScore)
+                    self.HidePlayGround()
+                }
+                
+                //Remove the brick
+                secondBody.node?.removeFromParent()
+                
+                self.ReturnAction()
             }
-            
-            if(HasGameFinished())
-            {
-                self.UpdateHighScore(_score: m_currentScore)
-                self.HidePlayGround()
-            }
-            
-            //Remove the brick
-            secondBody.node?.removeFromParent()
         }
         
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_powerUpBitmask)
         {
+            //This is not working and I couldn't fixed
             //Remove the power up
             print("The ball hitted the power up!!")
             secondBody.node?.removeFromParent()
         }
     }
-
 }

@@ -73,6 +73,7 @@ class GameScene: SKScene{
     var m_lives : Int = 2
     var m_currentScore : Int = 0
     var m_maxHighScore : Int = 0
+    var m_updatesCalled : Int = 0
     var m_PowerUpSpawned : Bool = false
     
     override func didMove(to view: SKView)
@@ -248,6 +249,7 @@ class GameScene: SKScene{
     
     func HidePlayGround()
     {
+        //Game
         m_gameBackground.isHidden = true
         m_borderTop.isHidden = true
         m_borderLeft.isHidden = true
@@ -255,6 +257,12 @@ class GameScene: SKScene{
         m_Ball.isHidden = true
         m_Racket.isHidden = true
         
+        //Power uP
+        if(m_PowerUpSpawned){
+            m_PowerUp.removeFromParent()
+        }
+        
+        //Bricks
         for bricksArray in bricksArray {
             bricksArray.removeFromParent()
         }
@@ -269,11 +277,21 @@ class GameScene: SKScene{
         m_currentScore = 0
         m_gameScore.text = "1UP: " + String(self.m_currentScore)
         
+        //Reset ball position
+        let action : SKAction
+        action = SKAction.moveTo(y: 200, duration: 0)
+        action.timingMode = .easeInEaseOut
+        self.m_Ball.run(action)
+        
         //Reset ball velocity
         m_Ball.physicsBody?.velocity = m_initialBallVelocity
         
+        //Unhide UI
         m_gameScore.isHidden = false
         m_gameHighScore.isHidden = false
+        
+        //Allow power up
+        m_PowerUpSpawned = false
         
         
         print("Game Started!")
@@ -283,7 +301,7 @@ class GameScene: SKScene{
     {
         //TODO -> Change to random point
         let action : SKAction
-        action = SKAction.moveTo(y: 100, duration: 0)
+        action = SKAction.moveTo(y: 200, duration: 0)
         action.timingMode = .easeInEaseOut
         self.m_Ball.run(action)
         
@@ -356,13 +374,17 @@ class GameScene: SKScene{
             case "block_yellow":
                 m_currentScore += self.UpdatePlayerScore(_brick: _brick)
                 m_gameScore.text = "1UP: " + String(self.m_currentScore)
-            //case "block_red":
+            case "block_red":
+                print("Making the bar bigger!")
                 
-            //case "block_pink":
+            case "block_pink":
+                print("Multiple Shoot!")
                 
-            //case "block_green":
+            case "block_green":
+                print("Spawning health!")
                 
-            //case "block_blue":
+            case "block_blue":
+                print("Invulnerability!")
                 
             default:
                 print("Block color not identified!!!")
@@ -373,5 +395,11 @@ class GameScene: SKScene{
         //Touched or not, remove it
         m_PowerUp.removeFromParent()
         m_PowerUpSpawned = false
+    }
+    
+    func ReturnAction(){
+        if(m_updatesCalled == 1){
+            self.m_updatesCalled = 0
+        }
     }
 }
