@@ -56,6 +56,7 @@ class GameScene: SKScene{
     var m_racketArray : [SKSpriteNode] = []
     var m_Racket : SKSpriteNode!
     var m_Ball : SKSpriteNode!
+    var m_PowerUp : SKSpriteNode!
     
     //Game over variables
     var m_gameOverTopTextLabel : SKLabelNode!
@@ -110,6 +111,11 @@ class GameScene: SKScene{
               print("Exit Button Pressed")
                 ExitPressed()
           }
+            if(m_PowerUpSpawned){
+                if(touchedNode.name == m_PowerUp.name){
+                  EnablePowerUp()
+              }
+            }
         }
         
         //Game Touches
@@ -121,6 +127,16 @@ class GameScene: SKScene{
             self.m_Racket.run(action)
         }
         
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if(m_PowerUpSpawned){
+            print(currentTime)
+        
+            if(m_PowerUp.position.y < (-(self.size.height / 2) + 400)){
+                EnablePowerUp()
+            }
+        }
     }
             
     // Menu Functions
@@ -333,26 +349,8 @@ class GameScene: SKScene{
         return score
     }
     
-    func CreatePowerUp(_brick : String, xPos : CGFloat, yPos : CGFloat)
-    {
-        let brick = SKSpriteNode(imageNamed: _brick)
-        brick.size = CGSize(width: brick.size.width * 3, height: brick.size.height * 3)
-        brick.position = CGPoint(x: 0, y: -(self.size.height / 2) + 400)
-        brick.zPosition = 2
-        
-        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.frame.size)
-        brick.physicsBody?.friction = 0
-        brick.physicsBody?.restitution = 1
-        brick.physicsBody?.linearDamping = 0
-        brick.physicsBody?.allowsRotation = false
-        brick.physicsBody?.velocity = CGVector(dx: 0, dy: -100)
-        
-        //BitMask
-        brick.physicsBody?.categoryBitMask = m_powerUpBitmask
-        brick.physicsBody?.contactTestBitMask = m_racketBitmask | m_ballBitmask | m_bottomBitmask
-        
-        self.addChild(brick)
-        
-        print("Power up created!")
+    func EnablePowerUp(){
+        m_PowerUp.removeFromParent()
+        m_PowerUpSpawned = false
     }
 }

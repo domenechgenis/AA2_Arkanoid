@@ -314,6 +314,26 @@ extension GameScene
         _border.physicsBody?.categoryBitMask = m_racketBitmask
     }
     
+    func CreatePowerUp(_brick : String, xPos : CGFloat, yPos : CGFloat)
+    {
+        self.m_PowerUp = SKSpriteNode(imageNamed: _brick)
+        self.m_PowerUp.name = "powerUp"
+        self.m_PowerUp.size = CGSize(width: self.m_PowerUp.size.width * 3, height:  self.m_PowerUp.size.height * 3)
+        self.m_PowerUp.position = CGPoint(x: xPos, y: yPos)
+        self.m_PowerUp.zPosition = 2
+        
+        self.m_PowerUp.physicsBody = SKPhysicsBody(rectangleOf:  self.m_PowerUp.frame.size)
+        self.m_PowerUp.physicsBody?.friction = 0
+        self.m_PowerUp.physicsBody?.restitution = 1
+        self.m_PowerUp.physicsBody?.linearDamping = 0
+        self.m_PowerUp.physicsBody?.allowsRotation = false
+        self.m_PowerUp.physicsBody?.velocity = CGVector(dx: 0, dy: -100)
+    
+        self.addChild( self.m_PowerUp)
+        
+        print("Power up created!")
+    }
+    
     // GAME OVER FUNCTIONS
     
     func AddTextLabel()
