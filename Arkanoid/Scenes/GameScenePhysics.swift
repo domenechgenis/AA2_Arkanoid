@@ -51,7 +51,7 @@ extension GameScene : SKPhysicsContactDelegate
                     {
                         self.UpdateHighScore(_score: m_currentScore)
                         self.HidePlayGround()
-                        self.ShowGameOverMenu()
+                        self.ShowGameOverMenu(labeltext: "Try again!")
                     }
                 }
             }
@@ -60,10 +60,14 @@ extension GameScene : SKPhysicsContactDelegate
         if(firstBody.categoryBitMask == m_ballBitmask && secondBody.categoryBitMask == m_brickBitmask)
         {
             m_bricks -= 1
+            
+            print(m_bricks)
+            
             //Update Score
             let brickName : String = secondBody.node!.name!
             m_currentScore += self.UpdatePlayerScore(_brick: brickName)
             m_gameScore.text = "1UP: " + String(self.m_currentScore)
+            
             
             //Create power up
             if(!m_PowerUpSpawned)
@@ -73,11 +77,11 @@ extension GameScene : SKPhysicsContactDelegate
                 self.CreatePowerUp(_brick: brickName, xPos: brickX, yPos: brickY)
                 m_PowerUpSpawned = true
             }
-            
             if(HasGameFinished())
             {
                 self.UpdateHighScore(_score: m_currentScore)
                 self.HidePlayGround()
+                self.ShowGameOverMenu(labeltext: "Congratulations!")
             }
             
             //Remove the brick

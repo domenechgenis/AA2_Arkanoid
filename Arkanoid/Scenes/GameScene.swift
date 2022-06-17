@@ -29,6 +29,7 @@ class GameScene: SKScene{
     let m_initialBallImpulse = CGVector(dx: 10, dy: -10)
     let m_Rows : Int = 5
     let m_Columns : Int = 13
+    let m_MaxLives : Int = 2
     
     // Collisions Mask
     let m_ballBitmask : UInt32 = 0x1 << 0       // 000000000
@@ -100,27 +101,32 @@ class GameScene: SKScene{
         self.CreateGameOverMenu()
     }
     
+    //Function focused on detect touches on the screen
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         //Menu Touches
         for touch in touches {
           let location = touch.location(in: self)
           let touchedNode = atPoint(location)
-    
+            
+            //If player touch play label, start the game
           if (touchedNode.name == m_playButtonLabel.name){
-              print("Play Button Pressed")
                 PlayPressed()
           }
+            //If player touch rety label, retry the game
             else if(touchedNode.name == m_gameOverRetryButtonLabel.name){
                 RetryPressed()
           }
+            //If player touch credits label, change to credits scene
+            // This label is deprecated due to technical issues
             else if(touchedNode.name == m_creditsButtonLabel.name){
                 CreditsPressed()
           }
+            //If player touch exit label, exit the game
             else if(touchedNode.name == m_exitButtonLabel.name){
-              print("Exit Button Pressed")
                 ExitPressed()
           }
+            //If player touch one power up, apply the touched power up
             if(m_PowerUpSpawned){
                 if(touchedNode.name == m_PowerUp.name){
                     EnablePowerUp(userTouched: true, _brick: m_PowerUp.name!)
@@ -128,7 +134,7 @@ class GameScene: SKScene{
             }
         }
         
-        //Game Touches
+        //Game Touches to move the racket
         if let touch = touches.first{
             let position = touch.location(in:self)
             let action : SKAction
@@ -139,7 +145,9 @@ class GameScene: SKScene{
         
     }
     
+    
     override func update(_ currentTime: TimeInterval) {
+        //Due to technical issues, if the power up reaches determined zone, remove it
         if(m_PowerUpSpawned){
             if(m_PowerUp.position.y < (-(self.size.height / 2) + 400)){
                 EnablePowerUp(userTouched: false, _brick: m_PowerUp.name!)
@@ -168,6 +176,7 @@ class GameScene: SKScene{
     
     private func HideMenu()
     {
+        // Due to technical reasons, it wasnt posible to change between scenes, so I decided to hide, unhide the scenes
         m_logo.isHidden = true
         m_playButtonLabel.isHidden = true
         m_creditsButtonLabel.isHidden = true
@@ -176,21 +185,26 @@ class GameScene: SKScene{
     
     func ShowMenu()
     {
+        // Due to technical reasons, it wasnt posible to change between scenes, so I decided to hide, unhide the scenes
         m_logo.isHidden = false
         m_playButtonLabel.isHidden = false
         m_creditsButtonLabel.isHidden = false
         m_exitButtonLabel.isHidden = false
     }
     
-    func ShowGameOverMenu()
+    func ShowGameOverMenu(labeltext : String)
     {
+        // Due to technical reasons, it wasnt posible to change between scenes, so I decided to hide, unhide the scenes
         m_gameOverTopTextLabel.isHidden = false
         m_gameOverRetryButtonLabel.isHidden = false
         m_gameOverExitButtonLabel.isHidden = false
+        
+        m_gameOverTopTextLabel.text = labeltext
     }
     
     private func HideGameOverMenu()
     {
+        // Due to technical reasons, it wasnt posible to change between scenes, so I decided to hide, unhide the scenes
         m_gameOverTopTextLabel.isHidden = true
         m_gameOverRetryButtonLabel.isHidden = true
         m_gameOverExitButtonLabel.isHidden = true
@@ -213,6 +227,7 @@ class GameScene: SKScene{
     
     private func CreditsPressed()
     {
+        //Not working
         let reveal = SKTransition.reveal(with: .down,duration: 1)
         let newScene = GameOverScene(size: CGSize(width: self.frame.width, height: self.frame.height))
         view?.presentScene(newScene,transition: reveal)
@@ -221,6 +236,7 @@ class GameScene: SKScene{
     // Game Functions
     private func CreateGame()
     {
+        // Due to technical reasons, it wasnt posible to change between scenes, so I decided to hide, unhide the scenes
         self.AddGameBackground()
         self.AddBorders()
         self.AddTopUI()
@@ -237,6 +253,7 @@ class GameScene: SKScene{
     
     private func ShowPlayGround()
     {
+        // Due to technical reasons, it wasnt posible to change between scenes, so I decided to hide, unhide the scenes
         m_gameBackground.isHidden = false
         m_borderTop.isHidden = false
         m_borderLeft.isHidden = false
@@ -251,7 +268,7 @@ class GameScene: SKScene{
             bricksArray.isHidden = false
         }
         
-        self.m_lives = 2
+        self.m_lives = m_MaxLives
         self.AddRacketsUI()
         
         for racketArray in m_racketArray {
@@ -264,6 +281,7 @@ class GameScene: SKScene{
     
     func HidePlayGround()
     {
+        // Due to technical reasons, it wasnt posible to change between scenes, so I decided to hide, unhide the scenes
         //Game
         m_gameBackground.isHidden = true
         m_borderTop.isHidden = true
@@ -291,7 +309,7 @@ class GameScene: SKScene{
     private func StartGame()
     {
         //Reset lives
-        m_lives = 2
+        m_lives = m_MaxLives
         
         // Reset Score
         m_currentScore = 0
@@ -331,6 +349,8 @@ class GameScene: SKScene{
         
         m_GameStarted = true
         
+        m_bricks *= 2
+        
         print("Game Started!")
     }
     
@@ -348,6 +368,7 @@ class GameScene: SKScene{
     
     private func CreateWorldSettings()
     {
+        //Enable world settings
         let worldBorder = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsBody = worldBorder
         self.physicsBody?.friction = 0
@@ -363,6 +384,7 @@ class GameScene: SKScene{
     
     func UpdateHighScore(_score : Int)
     {
+        //Only if the score is bigger than the highscore, otherwise dont do nothing
         if(_score > m_maxHighScore)
         {
             m_maxHighScore = _score
@@ -379,11 +401,13 @@ class GameScene: SKScene{
     }
     
     func HasGameFinished() -> Bool {
+        //The game if finished if bricks are equal or less to 0
         return m_bricks <= 0
     }
     
     func UpdatePlayerScore(_brick : String) -> Int
     {
+        //Update the player score depending of the brick destroyed
         var score : Int = 10
         switch _brick {
         case "block_yellow":
@@ -432,7 +456,7 @@ class GameScene: SKScene{
             }
         }
         
-        //Touched or not, remove it
+        //Touched or not, remove the power up and allow to spawn it again
         m_PowerUp.removeFromParent()
         m_PowerUpSpawned = false
     }
